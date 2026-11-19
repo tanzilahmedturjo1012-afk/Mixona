@@ -1,0 +1,2129 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070b12">
+  <title>ALX P8 // Self-Learning A–Z Quantum & Phantom Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-display: 'Outfit', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+      --bg: #070b12;
+      --bg-2: #0c121c;
+      --surface: #111827;
+      --surface-2: #162032;
+      --surface-3: #1c2a3f;
+      --border: rgba(94, 234, 212, 0.12);
+      --border-strong: rgba(94, 234, 212, 0.28);
+      --text: #e8f0f7;
+      --text-2: #8ba3b8;
+      --text-3: #5c738a;
+      --accent: #2dd4bf;
+      --accent-2: #22d3ee;
+      --violet: #a78bfa;
+      --gold: #fbbf24;
+      --success: #34d399;
+      --error: #f87171;
+      --amber: #fbbf24;
+      --grad: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 55%, #6366f1 100%);
+      --grad-soft: linear-gradient(160deg, #142033 0%, #0c121c 100%);
+      --shadow: 0 8px 32px rgba(0,0,0,0.45);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --sidebar-w: 232px;
+    }
+
+    html[data-theme="light"] {
+      --bg: #f0f4f8;
+      --bg-2: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f1f5f9;
+      --surface-3: #e2e8f0;
+      --border: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.16);
+      --text: #0f172a;
+      --text-2: #475569;
+      --text-3: #64748b;
+      --accent: #0d9488;
+      --accent-2: #0284c7;
+      --violet: #7c3aed;
+      --gold: #d97706;
+      --success: #059669;
+      --error: #e11d48;
+      --amber: #d97706;
+      --grad: linear-gradient(135deg, #0d9488 0%, #0284c7 55%, #7c3aed 100%);
+      --grad-soft: linear-gradient(160deg, #ffffff 0%, #f1f5f9 100%);
+      --shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { font-size: 15.5px; }
+    body {
+      font-family: var(--font-body);
+      background: radial-gradient(ellipse 80% 50% at 10% -10%, rgba(45, 212, 191, 0.09), transparent),
+                  radial-gradient(ellipse 60% 40% at 90% 0%, rgba(99, 102, 241, 0.07), transparent),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hidden { display: none !important; }
+
+    .shell { display: flex; min-height: 100vh; min-height: 100dvh; }
+    .sidebar { display: none; }
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 38px; padding: 7px 14px; border-radius: 11px;
+      border: 1px solid transparent; font-family: var(--font-display);
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      transition: transform 0.12s, background 0.18s, border-color 0.18s;
+      white-space: nowrap;
+    }
+    .btn:active:not(:disabled) { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 4px 18px rgba(20, 184, 166, 0.28); }
+    .btn-ghost { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+    .btn-ghost:hover:not(:disabled) { background: var(--surface-3); border-color: var(--border-strong); }
+    .btn-danger { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); color: var(--error); }
+    .btn-icon { width: 38px; height: 38px; padding: 0; }
+    .btn-block { width: 100%; }
+
+    .input {
+      width: 100%; min-height: 38px; background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 11px;
+      padding: 7px 12px; color: var(--text); font-family: var(--font-mono); font-size: 12.5px; outline: none;
+    }
+    .input:focus { border-color: var(--accent); }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2);
+    }
+    .chip-live { border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.1); color: var(--success); }
+    .chip-err { border-color: rgba(248, 113, 113, 0.35); background: rgba(248, 113, 113, 0.1); color: var(--error); }
+    .chip-demo { border-color: rgba(251, 191, 36, 0.35); background: rgba(251, 191, 36, 0.1); color: var(--gold); }
+    .chip-guard { border-color: rgba(251, 191, 36, 0.4); background: rgba(251, 191, 36, 0.1); color: var(--amber); }
+
+    .pulse { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.4s infinite; }
+    @keyframes pulse { 0%,100%{opacity:.45} 50%{opacity:1} }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(7, 11, 18, 0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    html[data-theme="light"] .topbar { background: rgba(255,255,255,0.9); }
+
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-mark {
+      width: 34px; height: 34px; border-radius: 10px; background: var(--grad);
+      display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;
+    }
+    .brand h1 { font-family: var(--font-display); font-size: 14.5px; font-weight: 800; line-height: 1.1; }
+    .brand span { display: block; font-size: 9.5px; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 1px; }
+
+    .bottom-nav {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+      background: rgba(7, 11, 18, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      padding: 4px 3px calc(4px + env(safe-area-inset-bottom)); gap: 2px;
+    }
+    html[data-theme="light"] .bottom-nav { background: rgba(255,255,255,0.92); }
+
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      min-height: 48px; padding: 4px 2px; border: none; background: transparent;
+      color: var(--text-3); border-radius: 10px; font-size: 9.5px; font-weight: 600; cursor: pointer;
+    }
+    .nav-item.active { color: var(--text); background: var(--surface-3); }
+    .nav-item.active svg { color: var(--accent); }
+
+    @media (min-width: 960px) {
+      .sidebar {
+        display: flex; flex-direction: column; width: var(--sidebar-w); flex-shrink: 0;
+        position: sticky; top: 0; height: 100vh;
+        background: rgba(7, 11, 18, 0.6); border-right: 1px solid var(--border);
+        padding: 18px 12px; gap: 16px;
+      }
+      html[data-theme="light"] .sidebar { background: rgba(255,255,255,0.7); }
+      .sidebar-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+      .sidebar .nav-item { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 9px 11px; font-size: 12.5px; min-height: 40px; }
+      .sidebar .nav-item.active { border: 1px solid var(--border-strong); }
+      .bottom-nav { display: none; }
+      .main { padding-bottom: 24px; }
+      .topbar .brand { display: none; }
+    }
+
+    .wrap {
+      width: 100%; max-width: 1180px; margin: 0 auto;
+      padding: 12px 14px; display: flex; flex-direction: column; gap: 12px;
+    }
+    @media (min-width: 768px) { .wrap { padding: 16px 20px; gap: 14px; } }
+
+    .view { display: none; flex-direction: column; gap: 12px; }
+    .view.active { display: flex; animation: up 0.18s ease-out; }
+    @keyframes up { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .panel {
+      background: var(--grad-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+    .panel-hd {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .panel-title {
+      display: flex; align-items: center; gap: 7px;
+      font-family: var(--font-display); font-size: 13.5px; font-weight: 700;
+    }
+    .panel-title svg { color: var(--accent); }
+
+    .g2 { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .g4 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+    .g6 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+    @media (min-width: 640px) {
+      .g4 { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+      .g6 { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+    }
+    @media (min-width: 960px) { .g6 { grid-template-columns: repeat(6, minmax(0,1fr)); } }
+    @media (min-width: 820px) { .g2 { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; } }
+
+    .metric {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 11px; min-width: 0;
+    }
+    .metric-l { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); }
+    .metric-v { font-family: var(--font-mono); font-size: 19px; font-weight: 700; margin-top: 3px; overflow-wrap: anywhere; }
+    .metric-s { font-size: 10.5px; color: var(--text-2); margin-top: 2px; }
+
+    .hero {
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow), 0 0 40px rgba(45, 212, 191, 0.06);
+    }
+    .hero-meta {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+      padding-bottom: 11px; border-bottom: 1px solid var(--border);
+    }
+    .period { font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--accent-2); }
+    .timer {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3);
+      color: var(--gold); font-family: var(--font-mono); font-size: 12.5px; font-weight: 700;
+    }
+
+    .guard {
+      margin-top: 11px; padding: 9px 12px; border-radius: var(--radius-sm);
+      background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.28);
+      color: var(--amber); font-size: 11.5px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .hero-body {
+      display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px; align-items: center;
+    }
+    @media (min-width: 768px) { .hero-body { grid-template-columns: 1.2fr 1fr; gap: 18px; } }
+
+    .call-box {
+      text-align: center; padding: 18px 12px; border-radius: var(--radius-sm);
+      background: var(--surface-2); border: 1px solid var(--border);
+    }
+    .call-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); }
+    .call-size {
+      font-family: var(--font-display); font-size: clamp(32px, 6.5vw, 48px);
+      font-weight: 800; letter-spacing: 0.04em; line-height: 1.05; margin: 5px 0;
+    }
+    .call-size.BIG { color: var(--gold); text-shadow: 0 0 28px rgba(251, 191, 36, 0.25); }
+    .call-size.SMALL { color: var(--accent-2); text-shadow: 0 0 28px rgba(34, 211, 238, 0.25); }
+    .call-size.SKIP { color: var(--amber); text-shadow: 0 0 28px rgba(251, 191, 36, 0.25); font-size: clamp(24px, 5.5vw, 36px); }
+    .call-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+
+    .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .num {
+      background: var(--surface-2); border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm); padding: 12px 6px; text-align: center;
+    }
+    .num label { display: block; font-size: 9.5px; font-weight: 700; text-transform: uppercase; color: var(--text-3); }
+    .num strong { display: block; font-family: var(--font-mono); font-size: 34px; font-weight: 700; line-height: 1.05; margin: 3px 0; }
+    .num span { font-size: 10.5px; color: var(--accent); font-weight: 600; }
+
+    .tape {
+      display: flex; align-items: center; gap: 5px; overflow-x: auto;
+      padding: 8px 0 2px; scrollbar-width: none;
+    }
+    .tape::-webkit-scrollbar { display: none; }
+    .dot {
+      flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-weight: 700; font-size: 12.5px;
+      border: 1px solid transparent;
+    }
+    .dot.big { background: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.35); color: var(--gold); }
+    .dot.small { background: rgba(34, 211, 238, 0.1); border-color: rgba(34, 211, 238, 0.35); color: var(--accent-2); }
+    .dot.newest { box-shadow: 0 0 0 2px var(--violet); }
+
+    .bar-row { display: grid; grid-template-columns: 108px 1fr 50px; align-items: center; gap: 8px; margin: 7px 0; font-size: 11.5px; }
+    .bar-track { height: 7px; background: var(--surface-2); border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
+    .bar-fill { height: 100%; background: var(--grad); border-radius: 999px; transition: width 0.25s ease; }
+
+    .eng {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 12px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .eng-hd { display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+    .eng-name { font-family: var(--font-display); font-weight: 700; font-size: 13px; }
+    .eng-nums { display: flex; align-items: center; gap: 5px; }
+    .npill {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 28px; height: 28px; padding: 0 6px; border-radius: 7px;
+      background: rgba(45, 212, 191, 0.12); border: 1px solid var(--border-strong);
+      font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      padding: 3px 8px; border-radius: 7px; font-size: 10.5px; font-family: var(--font-mono);
+      background: var(--surface-2); border: 1px solid var(--border); color: var(--text-2);
+    }
+
+    .matrix { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 5px; }
+    @media (min-width: 520px) { .matrix { grid-template-columns: repeat(10, minmax(0,1fr)); } }
+    .cell {
+      border-radius: 8px; padding: 6px 2px; text-align: center;
+      font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+      background: var(--surface-2); border: 1px solid var(--border);
+    }
+    .cell.big { color: var(--gold); border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.08); }
+    .cell.small { color: var(--accent-2); border-color: rgba(34, 211, 238, 0.3); background: rgba(34, 211, 238, 0.07); }
+    .cell em { display: block; font-style: normal; font-size: 8.5px; opacity: 0.6; margin-top: 1px; }
+
+    .tbl-wrap { width: 100%; overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+    th {
+      background: var(--surface-2); color: var(--text-3); font-size: 9.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 10px; text-align: left;
+      white-space: nowrap; border-bottom: 1px solid var(--border);
+    }
+    td { padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; font-family: var(--font-mono); }
+    tr:last-child td { border-bottom: none; }
+
+    .st {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 700;
+    }
+    .st-jp { background: rgba(251, 191, 36, 0.12); color: var(--gold); border: 1px solid rgba(251, 191, 36, 0.35); }
+    .st-win { background: rgba(52, 211, 153, 0.12); color: var(--success); border: 1px solid rgba(52, 211, 153, 0.3); }
+    .st-loss { background: rgba(248, 113, 113, 0.12); color: var(--error); border: 1px solid rgba(248, 113, 113, 0.3); }
+    .st-saved { background: rgba(251, 191, 36, 0.1); color: var(--amber); border: 1px solid rgba(251, 191, 36, 0.3); }
+    .st-wait { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
+
+    .seg { display: inline-flex; padding: 2px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); gap: 2px; }
+    .seg-btn {
+      min-height: 30px; padding: 3px 11px; border: none; border-radius: 8px;
+      background: transparent; color: var(--text-2); font-family: var(--font-display);
+      font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .seg-btn.active { background: var(--accent); color: #041016; }
+
+    .toolbar { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+    .search { position: relative; flex: 1; min-width: 160px; }
+    .search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+    .search input { padding-left: 34px; }
+
+    .toasts { position: fixed; top: 12px; right: 12px; z-index: 9999; display: flex; flex-direction: column; gap: 7px; max-width: calc(100vw - 24px); width: 300px; pointer-events: none; }
+    .toast {
+      pointer-events: auto; background: var(--surface); border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm); padding: 9px 12px; box-shadow: var(--shadow);
+      display: flex; align-items: center; gap: 8px; font-size: 12px;
+      animation: slide 0.2s ease-out;
+    }
+    @keyframes slide { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+
+    .modal-bg {
+      position: fixed; inset: 0; z-index: 9000; background: rgba(2, 4, 10, 0.7);
+      display: flex; align-items: center; justify-content: center; padding: 18px;
+    }
+    .modal {
+      width: 100%; max-width: 380px; background: var(--surface);
+      border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+    }
+
+    .empty { text-align: center; padding: 22px 12px; color: var(--text-3); font-size: 12px; }
+    .note { font-size: 10.5px; color: var(--text-3); line-height: 1.45; }
+  </style>
+</head>
+<body>
+  <div id="toastStack" class="toasts" aria-live="polite"></div>
+
+  <div id="confirmModal" class="modal-bg hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3 id="modalTitle" style="font-family: var(--font-display); font-size: 15px; margin-bottom: 7px;">Confirm Action</h3>
+      <p id="modalDesc" style="font-size: 12.5px; color: var(--text-2); margin-bottom: 14px;"></p>
+      <div style="display: flex; justify-content: flex-end; gap: 7px;">
+        <button id="modalCancel" class="btn btn-ghost" type="button">Cancel</button>
+        <button id="modalConfirm" class="btn btn-danger" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark" id="sidebarBrandIcon"></div>
+        <div>
+          <h1>ALX P8</h1>
+          <span>Self-Learning A–Z</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav" aria-label="Primary">
+        <button class="nav-item active" data-view="overview" type="button"></button>
+        <button class="nav-item" data-view="engines" type="button"></button>
+        <button class="nav-item" data-view="lab" type="button"></button>
+        <button class="nav-item" data-view="history" type="button"></button>
+        <button class="nav-item" data-view="ledger" type="button"></button>
+      </nav>
+      <div style="border-top: 1px solid var(--border); padding-top: 12px; display: flex; flex-direction: column; gap: 7px;">
+        <div class="chip chip-live" style="justify-content:center;">
+          <span class="pulse"></span><span>100% AUTO ENGINE</span>
+        </div>
+        <button id="sidebarThemeBtn" class="btn btn-ghost btn-block" type="button"></button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" id="topbarBrandIcon"></div>
+          <div>
+            <h1>ALX P8</h1>
+            <span>Phantom + Self-Learn</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+          <span id="connectionPill" class="chip chip-live">
+            <span class="pulse"></span>
+            <span id="connectionText">AUTO CONNECTING</span>
+          </span>
+          <span class="chip" id="clockPill" style="font-family: var(--font-mono);">--:--:--</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <span class="chip chip-live" id="autoBadge">AUTO: ON</span>
+          <button id="themeToggleBtn" class="btn btn-ghost btn-icon" type="button" aria-label="Toggle Theme"></button>
+        </div>
+      </header>
+
+      <main class="wrap">
+        <div class="panel" style="padding: 9px 12px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+            <div style="font-size: 11.5px; color: var(--text-2);" id="statusMessage">Starting automatic 100-result sync…</div>
+            <div style="display: flex; align-items: center; gap: 7px; flex-wrap: wrap;">
+              <select id="apiSelector" class="input" style="min-height: 34px; width: auto; padding: 5px 9px; font-size: 11px;" aria-label="API Feed">
+                <option value="auto">Auto Feed: Sky 30s + AR 1M</option>
+                <option value="sky30s">Sky WinGo 30s</option>
+                <option value="ar1m">AR-Lottery 1M</option>
+              </select>
+              <button id="demoBtn" class="btn btn-ghost" style="min-height:34px; padding:5px 10px;" type="button">DEMO PREVIEW</button>
+            </div>
+          </div>
+        </div>
+
+        <section id="view-overview" class="view active">
+          <div class="g6">
+            <div class="metric">
+              <div class="metric-l">Total Wins</div>
+              <div class="metric-v" id="statTotalWins" style="color: var(--success);">0</div>
+              <div class="metric-s" id="statWinRate">Win Rate: —%</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Total Losses</div>
+              <div class="metric-v" id="statTotalLosses" style="color: var(--error);">0</div>
+              <div class="metric-s" id="statSettledCount">0 settled</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Max Win Streak</div>
+              <div class="metric-v" id="statMaxWinStreak" style="color: var(--success);">0</div>
+              <div class="metric-s" id="statCurrentStreak">Current: —</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Max Loss Streak</div>
+              <div class="metric-v" id="statMaxLossStreak" style="color: var(--error);">0</div>
+              <div class="metric-s">Consecutive max</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Self-Learn Saves</div>
+              <div class="metric-v" id="statGuardSaves" style="color: var(--amber);">0</div>
+              <div class="metric-s" id="statGuardTotal">0 guarded skips</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">2-Num Jackpots</div>
+              <div class="metric-v" id="statNumHits" style="color: var(--gold);">0</div>
+              <div class="metric-s" id="statNumRate">Number rate: —%</div>
+            </div>
+          </div>
+
+          <div class="panel hero">
+            <div class="hero-meta">
+              <div style="display: flex; align-items: center; gap: 7px; flex-wrap: wrap;">
+                <span class="chip">NEXT PERIOD</span>
+                <span id="nextPeriodDisplay" class="period">#-----</span>
+                <span id="regimePill" class="chip">REGIME: —</span>
+                <span id="trendSummaryPill" class="chip">SHORT/LONG: —</span>
+              </div>
+              <div class="timer">
+                <span id="timerIcon"></span>
+                <span id="countdownText">30s</span>
+              </div>
+            </div>
+
+            <div id="guardBanner" class="guard hidden">
+              <span id="guardBannerIcon"></span>
+              <span id="guardBannerText">Self-Learning Guard Active: Same trend caused a recent loss — avoiding repeat call.</span>
+            </div>
+
+            <div class="hero-body">
+              <div class="call-box">
+                <div class="call-label">ALX P8 Self-Learning Ensemble Call</div>
+                <div id="masterSize" class="call-size BIG">SYNCING</div>
+                <div class="call-badges">
+                  <span class="chip" id="masterConfPill">Confidence: --%</span>
+                  <span class="chip" id="masterAgreePill">Engines: --/4</span>
+                  <span class="chip chip-demo hidden" id="jackpotAlertPill">JACKPOT SIGNAL</span>
+                </div>
+                <p id="masterSummary" style="margin-top: 9px; font-size: 11.5px; color: var(--text-2);">
+                  Automatically analyzing 100-result long & short trends…
+                </p>
+              </div>
+
+              <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
+                  <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3);">
+                    Fused 2-Number Target
+                  </span>
+                  <span id="streakPill" class="chip">Streak: —</span>
+                </div>
+                <div class="nums">
+                  <div class="num">
+                    <label>Primary #1</label>
+                    <strong id="masterNum1">—</strong>
+                    <span id="masterNum1Meta">Score —</span>
+                  </div>
+                  <div class="num">
+                    <label>Secondary #2</label>
+                    <strong id="masterNum2">—</strong>
+                    <span id="masterNum2Meta">Score —</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 9px;">
+              <div style="display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text-3);">
+                <span>LIVE 16-DRAW TAPE (NEWEST LEFT)</span>
+                <span id="bigSmallSplit">BIG — · SMALL —</span>
+              </div>
+              <div id="liveTape" class="tape"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="trendCardTitle">Short Trend vs Long Trend (A–Z Multi-Horizon)</div>
+              <span class="chip" id="entropyPill">Entropy: —</span>
+            </div>
+            <div class="g4" id="trendAzGrid"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="overviewMatrixTitle">4 Engines · Adaptive Self-Learning Weights</div>
+              <button class="btn btn-ghost" style="min-height:32px; padding:4px 10px;" type="button" data-jump="engines">Deep View</button>
+            </div>
+            <div class="g2" id="overviewEngineGrid"></div>
+          </div>
+        </section>
+
+        <section id="view-engines" class="view">
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="enginesPageTitle">A–Z Multi-Engine Deep Breakdown</div>
+              <span class="chip" id="gokuSourcePill">Active Pattern: —</span>
+            </div>
+            <div class="g2">
+              <div class="eng">
+                <div class="eng-hd">
+                  <div>
+                    <div class="eng-name">1. Phantom Core (Full V1.0 + Forward Fix)</div>
+                    <div style="font-size: 10.5px; color: var(--text-3);">6-Component Context, Entropy & Transitions</div>
+                  </div>
+                  <div class="eng-nums" id="engPhantomNums"></div>
+                </div>
+                <div id="engPhantomDetails"></div>
+              </div>
+              <div class="eng">
+                <div class="eng-hd">
+                  <div>
+                    <div class="eng-name">2. Renox Engine v2.0 (Forward Markov)</div>
+                    <div style="font-size: 10.5px; color: var(--text-3);">8-Factor Weighted Markov-1/2 + MA5/20</div>
+                  </div>
+                  <div class="eng-nums" id="engRenoxNums"></div>
+                </div>
+                <div id="engRenoxDetails"></div>
+              </div>
+              <div class="eng">
+                <div class="eng-hd">
+                  <div>
+                    <div class="eng-name">3. Hidan Trend Trio</div>
+                    <div style="font-size: 10.5px; color: var(--text-3);">CRM · PSM · MDR</div>
+                  </div>
+                  <div class="eng-nums" id="engHidanNums"></div>
+                </div>
+                <div id="engHidanDetails"></div>
+              </div>
+              <div class="eng">
+                <div class="eng-hd">
+                  <div>
+                    <div class="eng-name">4. Goku + Aura 500+</div>
+                    <div style="font-size: 10.5px; color: var(--text-3);">Dragon Streak + Aura Pattern Hash</div>
+                  </div>
+                  <div class="eng-nums" id="engGokuNums"></div>
+                </div>
+                <div id="engGokuDetails"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="numRankTitle">0–9 Fused Number Probability Ranking</div>
+              <span class="chip">Top 2 Selected Automatically</span>
+            </div>
+            <div id="numberRankBars"></div>
+          </div>
+        </section>
+
+        <section id="view-lab" class="view">
+          <div class="g2">
+            <div class="panel">
+              <div class="panel-hd">
+                <div class="panel-title" id="regimeTitle">Phantom Regime DNA (Short → Long)</div>
+              </div>
+              <div id="regimeBars"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-hd">
+                <div class="panel-title" id="shadowTitle">Forward Shadow Transition Memory</div>
+              </div>
+              <div id="contextBars"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="mistakeTitle">Self-Learning Mistake Memory (Guarded Trends)</div>
+              <span class="chip chip-guard" id="activeGuardsCount">0 Active Guards</span>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Trend / Regime Signature</th>
+                    <th>Blocked Call</th>
+                    <th>Losses</th>
+                    <th>Cooldown Left</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="mistakeMemoryBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="fingerprintTitle">Phantom K-Gram & Walk-Forward Backtest</div>
+            </div>
+            <div id="fingerprintCloud" class="tags" style="margin-bottom: 11px;"></div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Strategy (Chronological Walk-Forward)</th>
+                    <th>Correct</th>
+                    <th>Tested</th>
+                    <th>Hit Rate</th>
+                  </tr>
+                </thead>
+                <tbody id="backtestBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-history" class="view">
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="matrixTitle">Last 100 Results · Newest First</div>
+              <div class="seg">
+                <button class="seg-btn active" data-hist-filter="all" type="button">All</button>
+                <button class="seg-btn" data-hist-filter="BIG" type="button">Big (5–9)</button>
+                <button class="seg-btn" data-hist-filter="SMALL" type="button">Small (0–4)</button>
+              </div>
+            </div>
+            <div id="historyMatrix" class="matrix"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="drawLogTitle">Draw History Feed</div>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr><th>#</th><th>Period</th><th>Number</th><th>Size</th></tr>
+                </thead>
+                <tbody id="drawTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-ledger" class="view">
+          <div class="g6">
+            <div class="metric">
+              <div class="metric-l">Settled Trades</div>
+              <div class="metric-v" id="ledgerSettled">0</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Total Wins</div>
+              <div class="metric-v" id="ledgerWins" style="color: var(--success);">0</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Total Losses</div>
+              <div class="metric-v" id="ledgerLosses" style="color: var(--error);">0</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Max Win Streak</div>
+              <div class="metric-v" id="ledgerMaxWin" style="color: var(--success);">0</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Max Loss Streak</div>
+              <div class="metric-v" id="ledgerMaxLoss" style="color: var(--error);">0</div>
+            </div>
+            <div class="metric">
+              <div class="metric-l">Guard Saves</div>
+              <div class="metric-v" id="ledgerGuardSaves" style="color: var(--amber);">0</div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="ledgerTitle">Automatic Prediction & Self-Learn Ledger</div>
+              <div class="toolbar">
+                <div class="search">
+                  <span id="searchIconWrap"></span>
+                  <input id="ledgerSearch" class="input" type="search" placeholder="Search period, BIG/SMALL, status…">
+                </div>
+                <button id="clearLedgerBtn" class="btn btn-danger" type="button">CLEAR LEDGER</button>
+                <button id="resetLearnBtn" class="btn btn-ghost" type="button">RESET LEARNING</button>
+              </div>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Period</th>
+                    <th>Call</th>
+                    <th>2 Nums</th>
+                    <th>Trend Context</th>
+                    <th>Actual</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="ledgerBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-title" id="settingsTitle">Self-Learning & UI Preferences</div>
+            </div>
+            <div class="g2">
+              <div class="metric" style="display: flex; flex-direction: column; gap: 7px;">
+                <div class="metric-l">Jackpot Alert Confidence Threshold</div>
+                <div style="display: flex; align-items: center; gap: 11px;">
+                  <input id="jackpotThresholdRange" type="range" min="0.60" max="0.90" step="0.01" value="0.75" style="flex: 1; accent-color: var(--accent);">
+                  <span id="jackpotThresholdVal" style="font-family: var(--font-mono); font-weight: 700;">75%</span>
+                </div>
+                <div class="metric-s">Controls Jackpot highlight sensitivity. All predictions & learning remain 100% automatic.</div>
+              </div>
+              <div class="metric" style="display: flex; flex-direction: column; gap: 7px;">
+                <div class="metric-l">Appearance</div>
+                <div><button id="settingsThemeBtn" class="btn btn-ghost" type="button">Switch Theme</button></div>
+                <div class="metric-s">Ledger, streaks, and self-learning weights persist automatically in localStorage.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="note">
+          ALX P8 merges Phantom Core V1.0 (chronologically corrected), Renox v2.0, Hidan Trend Trio, Goku + Aura 500+, Short/Long Trend A–Z analysis, and an online Self-Learning Mistake Guard. Note: Truly random lottery draws cannot be guaranteed; probabilities and self-learning guards reflect historical sequence diagnostics.
+        </footer>
+      </main>
+    </div>
+
+    <nav class="bottom-nav" aria-label="Mobile">
+      <button class="nav-item active" data-view="overview" type="button"></button>
+      <button class="nav-item" data-view="engines" type="button"></button>
+      <button class="nav-item" data-view="lab" type="button"></button>
+      <button class="nav-item" data-view="history" type="button"></button>
+      <button class="nav-item" data-view="ledger" type="button"></button>
+    </nav>
+  </div>
+
+  <script>
+    'use strict';
+
+    const ICONS = {
+      zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+      shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+      sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+      moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+      layout: '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+      cpu: '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>',
+      activity: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+      grid: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>',
+      list: '<line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/>',
+      clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+      search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+      award: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+      alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>'
+    };
+
+    const svgIcon = (name, size = 17) =>
+      `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+
+    const $ = id => document.getElementById(id);
+    const pct = x => (100 * x).toFixed(1) + '%';
+    const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+
+    const PhantomEngine = (function () {
+      function entropy(bits) {
+        if (!bits.length) return 0;
+        const p = bits.filter(Boolean).length / bits.length;
+        if (p === 0 || p === 1) return 0;
+        return -(p * Math.log2(p) + (1 - p) * Math.log2(1 - p));
+      }
+
+      function fingerprintStats(bits, k) {
+        const map = {};
+        for (let i = 1; i + k <= bits.length; i++) {
+          const key = bits.slice(i, i + k).map(Number).join('');
+          (map[key] ??= []).push(bits[i - 1] ? 1 : 0);
+        }
+        const cur = bits.slice(0, k).map(Number).join('');
+        const vals = map[cur] || [];
+        return {
+          key: cur,
+          n: vals.length,
+          p: vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null,
+          all: Object.keys(map).length
+        };
+      }
+
+      function weightedRate(bits, window) {
+        const s = bits.slice(0, window);
+        if (!s.length) return 0.5;
+        let a = 0, b = 0;
+        for (let i = 0; i < s.length; i++) {
+          const w = Math.exp(-i / Math.max(2, window / 3));
+          a += s[i] * w;
+          b += w;
+        }
+        return a / b;
+      }
+
+      function transitionRate(bits, k) {
+        let hit = 0, total = 0;
+        const cur = bits.slice(0, k).join('');
+        for (let i = 1; i + k <= bits.length; i++) {
+          const key = bits.slice(i, i + k).join('');
+          if (key === cur) {
+            hit += bits[i - 1] ? 1 : 0;
+            total++;
+          }
+        }
+        return { p: total ? hit / total : 0.5, n: total };
+      }
+
+      function analyse(data) {
+        const nums = data.map(x => x.number);
+        const bits = nums.map(n => n >= 5 ? 1 : 0);
+        const N = bits.length;
+
+        const rates = [5, 10, 20, 30, 50, 100].map(w => ({ w, p: weightedRate(bits, w) }));
+        const r5 = rates[0].p, r10 = rates[1].p, r20 = rates[2].p, r30 = rates[3].p, r50 = rates[4].p, r100 = rates[5].p;
+
+        let streak = 1;
+        while (streak < N && bits[streak] === bits[0]) streak++;
+
+        let flips = 0;
+        const altSpan = Math.max(1, Math.min(N - 1, 30));
+        for (let i = 0; i < altSpan; i++) if (bits[i] !== bits[i + 1]) flips++;
+        const alternation = flips / altSpan;
+        const trendStrength = Math.abs(r10 - 0.5) * 2;
+        const entropyVal = N ? entropy(bits.slice(0, 30)) : 0;
+
+        const regime = entropyVal > 0.96 && alternation > 0.42 && alternation < 0.68 ? 'CHAOTIC'
+          : alternation > 0.72 ? 'ALTERNATING'
+          : streak >= 4 ? 'STREAK / CONTINUATION'
+          : Math.abs(r10 - r100) > 0.22 ? 'REGIME SHIFT'
+          : trendStrength > 0.24 ? 'TRENDING'
+          : 'MIXED / STABLE';
+
+        const ctx = [3, 4, 5, 6, 8].map(k => {
+          const f = fingerprintStats(bits, k);
+          const raw = f.p ?? 0.5;
+          const shrunk = (raw * f.n + 0.5 * 6) / (f.n + 6);
+          return { ...f, k, shrunk };
+        });
+
+        const trans = [2, 3, 4, 5].map(k => ({ k, ...transitionRate(bits, k) }));
+
+        const shortTrendP = r5 * 0.40 + r10 * 0.35 + r20 * 0.25;
+        const longTrendP = r30 * 0.40 + r50 * 0.35 + r100 * 0.25;
+
+        const components = [
+          { name: 'Short Trend (5–20)', p: shortTrendP, w: 0.22 },
+          { name: 'Long Trend (30–100)', p: longTrendP, w: 0.16 },
+          { name: 'Context Fingerprints', p: ctx.reduce((a, x) => a + x.shrunk, 0) / ctx.length, w: 0.26 },
+          { name: 'Forward Transitions', p: trans.reduce((a, x) => a + (x.p * x.n + 0.5 * 5) / (x.n + 5), 0) / trans.length, w: 0.16 },
+          { name: 'Run / Alternation', p: alternation > 0.72 ? (1 - bits[0]) * 0.68 + bits[0] * 0.32 : (streak >= 2 ? bits[0] * 0.62 + (1 - bits[0]) * 0.38 : 0.5), w: 0.12 },
+          { name: 'Macro Reversion', p: Math.abs(r10 - r100) > 0.22 ? (r10 > r100 ? 0.38 : 0.62) : 0.5, w: 0.08 }
+        ];
+
+        const totalW = components.reduce((a, x) => a + x.w, 0);
+        const p = components.reduce((a, x) => a + x.p * x.w, 0) / totalW;
+
+        const score = Array(10).fill(1.5);
+        for (let i = 1; i < nums.length; i++) {
+          const w = Math.exp(-i / 38);
+          score[nums[i - 1]] += w * 0.35;
+          for (const k of [2, 3, 4]) {
+            if (i + k <= nums.length && nums.slice(i, i + k).join(',') === nums.slice(0, k).join(',')) {
+              score[nums[i - 1]] += w * (1.2 / k);
+            }
+          }
+        }
+        const sum = score.reduce((a, b) => a + b, 0);
+        const rank = score.map((s, n) => ({ n, p: s / sum })).sort((a, b) => b.p - a.p);
+
+        return {
+          nums, bits, rates, shortTrendP, longTrendP,
+          r5, r10, r30, r50, r100,
+          streak, alternation, trendStrength, regime, entropyVal,
+          ctx, trans, components, p, rank,
+          prediction: p >= 0.5 ? 'BIG' : 'SMALL',
+          confidence: Math.abs(p - 0.5) * 2,
+          numbers: [rank[0].n, rank[1].n],
+          N
+        };
+      }
+
+      function backtest(nums) {
+        const chronoBits = nums.map(n => n >= 5 ? 1 : 0).reverse();
+        const methods = [
+          {
+            name: 'Short+Long Weighted',
+            fn: h => (weightedRate(h, Math.min(10, h.length)) * 0.6 + weightedRate(h, Math.min(40, h.length)) * 0.4) >= 0.5 ? 1 : 0
+          },
+          {
+            name: 'Forward Fingerprint',
+            fn: h => {
+              const c = [];
+              for (const k of [3, 4, 5]) {
+                const f = fingerprintStats(h, k);
+                if (f.n >= 2) c.push((f.p * f.n + 1.5) / (f.n + 3));
+              }
+              return (c.length ? c.reduce((a, b) => a + b, 0) / c.length : weightedRate(h, Math.min(15, h.length))) >= 0.5 ? 1 : 0;
+            }
+          },
+          {
+            name: 'Alternation / Streak',
+            fn: h => {
+              let flips = 0;
+              const span = Math.max(1, Math.min(12, h.length - 1));
+              for (let i = 0; i < span; i++) if (h[i] !== h[i + 1]) flips++;
+              return (flips / span) > 0.72 ? 1 - h[0] : h[0];
+            }
+          }
+        ];
+
+        return methods.map(m => {
+          let correct = 0, tested = 0;
+          for (let t = 25; t < chronoBits.length; t++) {
+            const pastNewestFirst = chronoBits.slice(0, t).reverse();
+            const pred = m.fn(pastNewestFirst);
+            if (pred === chronoBits[t]) correct++;
+            tested++;
+          }
+          return { name: m.name, correct, tested, rate: tested ? correct / tested : 0 };
+        });
+      }
+
+      return { analyse, backtest };
+    })();
+
+    const RenoxEngine = (function () {
+      function predict(history, options = {}) {
+        const jackpotThreshold = options.jackpotThreshold || 0.75;
+        const nums = history.map(item => typeof item === 'number' ? item : parseInt(item.number, 10))
+          .filter(n => !isNaN(n) && n >= 0 && n <= 9);
+
+        if (nums.length < 10) {
+          return {
+            prediction: 'BIG', bigProb: 0.5, smallProb: 0.5, confidence: 0.5, confidencePct: 50,
+            isJackpot: false, numbers: [7, 8], rangeScores: [], numberReason: 'Warmup',
+            factors: {}, agreement: 0, streak: { count: 0, side: '—' }, hotNumber: 0, coldNumber: 0
+          };
+        }
+
+        const data = nums.slice(0, 100);
+        const sizes = data.map(n => n >= 5 ? 'BIG' : 'SMALL');
+        const total = data.length;
+
+        const bigFreq = sizes.filter(s => s === 'BIG').length / total;
+        const smallFreq = 1 - bigFreq;
+        let f1Big = bigFreq, f1Small = smallFreq;
+        if (bigFreq < 0.45) { f1Big += 0.10; f1Small -= 0.05; }
+        if (smallFreq < 0.45) { f1Small += 0.10; f1Big -= 0.05; }
+        const frequency = { big: clamp(f1Big, 0.01, 0.99), small: clamp(f1Small, 0.01, 0.99) };
+
+        const last10 = sizes.slice(0, 10);
+        const last10Big = last10.filter(s => s === 'BIG').length / last10.length;
+        const momentum = { big: last10Big, small: 1 - last10Big };
+
+        let sCount = 1;
+        for (let i = 1; i < sizes.length; i++) {
+          if (sizes[i] === sizes[0]) sCount++; else break;
+        }
+        const streak = { count: sCount, side: sizes[0] };
+        let f3Big = 0.5, f3Small = 0.5;
+        if (sCount >= 4) { f3Big = sizes[0] === 'BIG' ? 0.25 : 0.75; f3Small = 1 - f3Big; }
+        else if (sCount === 3) { f3Big = sizes[0] === 'BIG' ? 0.38 : 0.62; f3Small = 1 - f3Big; }
+        else if (sCount === 2) { f3Big = sizes[0] === 'BIG' ? 0.58 : 0.42; f3Small = 1 - f3Big; }
+        else { f3Big = sizes[0] === 'BIG' ? 0.52 : 0.48; f3Small = 1 - f3Big; }
+        const streakFactor = { big: f3Big, small: f3Small };
+
+        let b2b = 0, b2s = 0, s2b = 0, s2s = 0;
+        for (let i = 1; i < sizes.length; i++) {
+          if (sizes[i] === 'BIG') { if (sizes[i - 1] === 'BIG') b2b++; else b2s++; }
+          else { if (sizes[i - 1] === 'BIG') s2b++; else s2s++; }
+        }
+        let f4Big = 0.5, f4Small = 0.5;
+        if (sizes[0] === 'BIG' && b2b + b2s > 0) { f4Big = b2b / (b2b + b2s); f4Small = 1 - f4Big; }
+        else if (sizes[0] === 'SMALL' && s2b + s2s > 0) { f4Big = s2b / (s2b + s2s); f4Small = 1 - f4Big; }
+        const markov1 = { big: f4Big, small: f4Small };
+
+        let f5Big = 0.5, f5Small = 0.5;
+        if (sizes.length >= 3) {
+          const curPat = sizes[0] + '-' + sizes[1];
+          let b = 0, s = 0;
+          for (let i = 1; i < sizes.length - 1; i++) {
+            if (sizes[i] + '-' + sizes[i + 1] === curPat) {
+              if (sizes[i - 1] === 'BIG') b++; else s++;
+            }
+          }
+          if (b + s > 0) { f5Big = b / (b + s); f5Small = s / (b + s); }
+        }
+        const markov2 = { big: f5Big, small: f5Small };
+
+        let alt = 0;
+        for (let i = 0; i < sizes.length - 1; i++) if (sizes[i] !== sizes[i + 1]) alt++;
+        const altRatio = alt / (sizes.length - 1);
+        let f6Big = 0.5, f6Small = 0.5;
+        if (altRatio > 0.65) { f6Big = sizes[0] === 'BIG' ? 0.30 : 0.70; f6Small = 1 - f6Big; }
+        else if (altRatio < 0.35) { f6Big = sizes[0] === 'BIG' ? 0.65 : 0.35; f6Small = 1 - f6Big; }
+        const alternation = { big: f6Big, small: f6Small };
+
+        const recent50 = data.slice(0, 50);
+        const counts = Array(10).fill(0);
+        recent50.forEach(n => counts[n]++);
+        let hotNum = 0, coldNum = 0;
+        for (let n = 1; n <= 9; n++) {
+          if (counts[n] > counts[hotNum]) hotNum = n;
+          if (counts[n] < counts[coldNum]) coldNum = n;
+        }
+        let f7Big = 0.5, f7Small = 0.5;
+        if (counts[hotNum] >= 5) { if (hotNum >= 5) f7Big += 0.08; else f7Small += 0.08; }
+        if (counts[coldNum] === 0) { if (coldNum >= 5) f7Big += 0.10; else f7Small += 0.10; }
+        const hotcold = { big: f7Big, small: f7Small };
+
+        const ma5Slice = sizes.slice(0, 5);
+        const ma20Slice = sizes.slice(0, 20);
+        const ma5 = ma5Slice.filter(s => s === 'BIG').length / ma5Slice.length;
+        const ma20 = ma20Slice.filter(s => s === 'BIG').length / ma20Slice.length;
+        let f8Big = ma5, f8Small = 1 - ma5;
+        if (ma5 > ma20 + 0.15) { f8Big += 0.08; f8Small -= 0.04; }
+        if (ma5 < ma20 - 0.15) { f8Small += 0.08; f8Big -= 0.04; }
+        const ma = { big: Math.max(f8Big, 0.01), small: Math.max(f8Small, 0.01) };
+
+        const factors = { frequency, momentum, streak: streakFactor, markov1, markov2, alternation, hotcold, ma };
+        const weights = { frequency: 0.18, momentum: 0.15, streak: 0.18, markov1: 0.15, markov2: 0.12, alternation: 0.10, hotcold: 0.07, ma: 0.05 };
+
+        let bigScore = 0, smallScore = 0;
+        for (const k in weights) {
+          bigScore += factors[k].big * weights[k];
+          smallScore += factors[k].small * weights[k];
+        }
+        const sum = bigScore + smallScore;
+        const bigProb = bigScore / sum;
+        const winner = bigProb >= 0.5 ? 'BIG' : 'SMALL';
+
+        let agree = 0;
+        for (const k in factors) {
+          if (winner === 'BIG' && factors[k].big > factors[k].small) agree++;
+          if (winner === 'SMALL' && factors[k].small > factors[k].big) agree++;
+        }
+
+        const confidence = Math.min(Math.max(bigProb, 1 - bigProb) + (agree / 8) * 0.10, 0.95);
+        const recent20 = data.slice(0, 20);
+        const range = winner === 'BIG' ? [5, 6, 7, 8, 9] : [0, 1, 2, 3, 4];
+        const rangeScores = range.map(n => {
+          let sc = 0;
+          const c20 = recent20.filter(x => x === n).length;
+          const c50 = recent50.filter(x => x === n).length;
+          sc += c20 * 0.5;
+          if (c20 === 0) sc += 3.0;
+          if (c50 >= 2 && c50 <= 5) sc += 1.5;
+          return { n, score: sc };
+        }).sort((a, b) => b.score - a.score);
+
+        return {
+          prediction: winner,
+          bigProb,
+          smallProb: 1 - bigProb,
+          confidence,
+          confidencePct: Math.round(confidence * 100),
+          isJackpot: confidence >= jackpotThreshold,
+          numbers: [rangeScores[0].n, rangeScores[1].n],
+          rangeScores,
+          numberReason: winner === 'BIG' ? 'BIG convergence' : 'SMALL convergence',
+          factors,
+          agreement: agree,
+          streak,
+          hotNumber: hotNum,
+          coldNumber: coldNum
+        };
+      }
+
+      return { predict };
+    })();
+
+    const HidanEngine = (function () {
+      function predict(history) {
+        const nums = history.map(h => parseInt(h.number, 10));
+        let up = 0, down = 0;
+        const span = Math.min(18, nums.length);
+        for (let i = 1; i < span; i++) {
+          if (nums[i - 1] > nums[i]) up++;
+          else if (nums[i - 1] < nums[i]) down++;
+        }
+        const crm = up >= down ? 'BIG' : 'SMALL';
+
+        const last12 = nums.slice(0, 12);
+        const big12 = last12.filter(n => n >= 5).length;
+        const small12 = last12.length - big12;
+        const psm = (big12 - small12 >= 3) ? 'SMALL' : (small12 - big12 >= 3) ? 'BIG' : (big12 >= small12 ? 'BIG' : 'SMALL');
+
+        let lastMirror = null;
+        for (let i = 1; i < nums.length; i++) {
+          if (Math.abs(nums[i - 1] - nums[i]) === 5) { lastMirror = nums[i - 1]; break; }
+        }
+        const mdr = lastMirror === null ? (nums[0] >= 5 ? 'SMALL' : 'BIG') : (lastMirror >= 5 ? 'SMALL' : 'BIG');
+
+        const prediction = [crm, psm, mdr].filter(x => x === 'BIG').length >= 2 ? 'BIG' : 'SMALL';
+        let conf = 45;
+        if (crm === prediction) conf += 18;
+        if (psm === prediction) conf += 18;
+        if (mdr === prediction) conf += 18;
+
+        const lastIndex = Array(10).fill(999);
+        for (let i = nums.length - 1; i >= 0; i--) lastIndex[nums[i]] = i;
+        let coldest = 0, hottest = 0;
+        for (let n = 1; n <= 9; n++) {
+          if (lastIndex[n] > lastIndex[coldest]) coldest = n;
+          if (lastIndex[n] < lastIndex[hottest]) hottest = n;
+        }
+        const n1 = coldest;
+        const n2 = hottest !== n1 ? hottest : (n1 + 5) % 10;
+
+        const oppPool = prediction === 'BIG' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
+        const recent10 = nums.slice(0, 10);
+        const opposite = oppPool.find(x => recent10.includes(x)) ?? oppPool[0];
+
+        return {
+          prediction,
+          confidencePct: Math.min(conf, 99),
+          signals: { crm, psm, mdr },
+          numbers: [n1, n2],
+          opposite
+        };
+      }
+
+      return { predict };
+    })();
+
+    const GokuAuraEngine = (function () {
+      const AURA_PATTERNS = {
+        "BSBSBBBBS":"1","SBSBBBBSB":"1","BSBBBBSBB":"1","SBBBBSBBB":"1","BBBBBSBBBB":"2",
+        "BBBSBBBBS":"2","BBSBBBBSS":"1","BSBBBBSSS":"2","SBBBBSSSS":"2","BBBBSSSSS":"1",
+        "BBBSSSSSS":"2","BBSSSSSSS":"2","BSSSSSSSB":"1","SSSSSSSBS":"1","SSSSSSBSB":"1",
+        "SSSSSBSBB":"2","SSSSBSBBS":"2","SSSBSBBSS":"2","SSBSBBSSS":"1","SBSBBSSSB":"1",
+        "BSBBSSSBB":"1","SBBSSSBBB":"1","BBSSSBBBS":"1","BSSSBBBSB":"2","SSSBBBSBB":"2",
+        "SSBBBSBBS":"2","SBBBSBBSS":"2","BBBSBBSSS":"1","BBSBBSSSB":"2","BBSSSBBBB":"1",
+        "BSSSBBBBB":"1","SSSBBBBBS":"2","SSBBBBBSS":"2","SBBBBBSSS":"1","BBBBBSSSS":"2",
+        "BBBBSSSSB":"1","BBBSSSSBB":"2","BBSSSSBBS":"1","BSSSSBBSS":"2","SSSSBBSSB":"2",
+        "SSSBBSSBB":"2","SSBBSSBBS":"1","SBBSSBBSS":"1","BBSSBBSSS":"2","BSSBBSSSS":"2",
+        "SSBBSSSSB":"2","SBBSSSSBB":"2","BBSSSSBBB":"2","BSSSSBBBS":"2","SSSSBBBSS":"1",
+        "SSSBBBSSS":"1","SSBBBSSSB":"2","SBBBSSSBB":"2","BBBSSSBBS":"1","BBSSSBBSB":"2",
+        "BSSSBBSBS":"2","SSSBBSBSB":"1","SSBBSBSBS":"1","SBBSBSBSB":"2","BBSBSBSBB":"2",
+        "BSBSBSBBS":"2","SBSBSBBSS":"1","BSBSBBSSB":"2","SBSBBSSBS":"1","BSBBSSBSB":"2",
+        "SBBSSBSBB":"2","BBSSBSBBS":"2","BSSBSBBSB":"1","SSBSBBSBS":"1","SBSBBSBSS":"1",
+        "BSBBSBSSB":"1","SBBSBSSBS":"1","BBSBSSBSB":"1","BSBSSBSBB":"1","SBSSBSBBS":"1",
+        "SSBSBBSBB":"1","SBSBBSBBS":"1","BSBBSBBSS":"1","SBBSBBSSB":"1","BBSBBSSBS":"1",
+        "SBBSSBSBS":"2","BBSSBSBSS":"2","BSSBSBSSB":"1","SSBSBSSBS":"2","SBSBSSBSS":"2",
+        "BSBSSBSSS":"2","SBSSBSSSS":"1","BSSBSSSSB":"1","SSBSSSSBB":"2","SBSSSSBBS":"2",
+        "SSSSBBSSS":"2","SSSBBSSSS":"2","BSSSSBBSB":"1","SSSSBBSBB":"1","SSSBBSBBB":"2",
+        "SSBBSBBBS":"1","SBBSBBBSS":"2","BBSBBBSSB":"1","BSBBBSSBB":"1","SBBBSSBBB":"2",
+        "BBBSSBBBB":"1","BBSSBBBBS":"2","BSSBBBBSS":"2","SSBBBBSSB":"2","SBBBBSSBB":"2",
+        "BBBBSSBBS":"1","BBBSSBBSB":"1","BBSSBBSBB":"1","BSSBBSBBB":"2","SBBSBBBSB":"2",
+        "BBSBBBSBS":"2","BSBBBSBSS":"1","SBBBSBSSB":"2","BBBSBSSBB":"1","BBSBSSBBB":"2",
+        "BSBSSBBBB":"1","SBSSBBBBS":"1","SSBBBBSSS":"2","BBBSSSSSB":"2","BBSSSSSBS":"2",
+        "BSSSSSBSS":"1","SSSSSBSSS":"1","SSSSBSSSB":"1","SSSBSSSBS":"1","SSBSSSBSB":"2",
+        "SBSSSBSBS":"1","BSSSBSBSB":"1","SSSBSBSBS":"2","SSBSBSBSS":"2","SBSBSBSSS":"2",
+        "BSBSBSSSS":"2","SBSBSSSSB":"2","BSBSSSSBS":"2","SBSSSSBSS":"1","BSSSSBSSB":"2",
+        "SSSSBSSBB":"1","SSSBSSBBS":"2","SSBSSBBSS":"1","SBSSBBSSS":"1","SSBBSSSSS":"1",
+        "SBBSSSSSS":"1","BSSSSSSSS":"2","SSSSSSSSB":"1","SSSSSSSBB":"1","SSSSSSBBB":"2",
+        "SSSSSBBBS":"1","SBBBSSSBS":"2","BBBSSSBSS":"2","BBSSSBSSS":"1","BSSSBSSSS":"1",
+        "SSSBSSSSB":"2","SSBSSSSBS":"2","SBSSSSBSB":"2","BSSSSBSBS":"2","SSSSBSBSS":"1",
+        "SSSBSBSSB":"1","SSBSBSSBB":"1","SBSBSSBBS":"2","BSBSSBBSS":"2","SBBSSSSSB":"1",
+        "BBSSSSSBB":"2","BSSSSSBBB":"2","SSSBBBSSB":"2","SSBBBSSBS":"1","SBBBSSBSB":"2",
+        "BBBSSBSBS":"2","SBSBSSBBB":"1","BSBSSBBBS":"1","SBSSBBBSB":"1","BSSBBBSBS":"1",
+        "SSBBBSBSS":"1","BBBSBSSBS":"2","SBSSBSBBB":"2","BSSBSBBBB":"1","SSBSBBBBS":"2",
+        "SBSBBBBSS":"1","BSBBBBSSB":"2","SBBBBSSBS":"1","BBBBSSBSS":"1","BBBSSBSSS":"1",
+        "BBSSBSSSB":"1","BSSBSSSBB":"2","SSBSSSBBS":"1","SBSSSBBSB":"2","SSSBBSBSS":"2",
+        "SSBBSBSSS":"1","SBBSBSSSB":"1","BBSBSSSBS":"1","BSBSSSBSB":"1","SBSSSBSBB":"2",
+        "BSSSBSBBS":"1","SSSBSBBSB":"1","BSBBSBBBB":"1","SBBSBBBBS":"2","BBBSSBSSB":"2",
+        "BBSSBSSBS":"1","BSSBSSBSB":"1","SSBSSBSBB":"1","BSSBSBBBS":"2","SSBSBBBSB":"2",
+        "SBSBBBSBS":"2","SBSSBBBBB":"2","BSSBBBBBB":"1","SSBBBBBBS":"1","SBBBBBBSS":"2",
+        "BBBBBBSSB":"2","BBBBBSSBB":"1","BBBBSSBBB":"1","BBSSBBBBB":"2","BBBBBBSSS":"2",
+        "BBBBBSSSB":"1","BBBBSSSBS":"2","BBBSSSBSB":"2","BBSSSBSBB":"1","BSSSBSBBB":"1",
+        "SSSBSBBBB":"1","SSBSBBBBB":"2","SBSBBBBBS":"1","BSBBBBBSS":"1","SBBBBBSSB":"2",
+        "BBBBBSSBS":"1","BBBBSSBSB":"1","BBBSSBSBB":"2","BBSSBSBBB":"2","SSBSBBBSS":"2",
+        "SBSBBBSSS":"1","BSBBBSSSB":"2","SBSSSSBSS":"2","BSSSSBSSS":"2","SSSSBSSSS":"2",
+        "SSSBSSSSS":"2","SSBSSSSSS":"1","SBSSSSSSB":"2","BSSSSSSBS":"2","SSSSSBSBB":"1",
+        "SSSSBSBBB":"2","SSSBSBBBS":"2","SSBSBBBSS":"1","SBSBBBSSB":"2","BSSBBBBBS":"2",
+        "BBBBSSSBB":"1","BBBSSSBBB":"1","SSSBBBBBB":"2","SBBBBBBSB":"1","BBBBBBSBB":"2",
+        "BBBBBSBBB":"1","BBBBSBBBB":"1","BBBSBBBBB":"1","BBSBBBBBB":"1","BSBBBBBBB":"1",
+        "SBBBBBBBS":"1","BBBBBBBSS":"2","BBBSSBBBS":"1","BBSSBBBSB":"1","SSBBBSBSB":"2",
+        "SBBBSBSBB":"1","BBBSBSBBB":"2","BBSBSBBBS":"2","BSBSBBBSB":"2","SBSBBBSBB":"2",
+        "BSBBBSBBS":"1","SBBBSBBSB":"2","BBBSBBSBS":"1","BBSBBSBSS":"1","BSBBSBSSS":"1",
+        "BBSBSSSBB":"2","BSBSSSBBS":"2","SBSSSBBSS":"2","BSSSBBSSB":"1","SBBSSBBSB":"2",
+        "BBSBBBSSS":"1","SBBBSSSBS":"1","BBSSSBSBS":"1","BSSSBSBSS":"2","SSSBSBSSS":"2",
+        "SSBSBSSSS":"1","SBSBSSSSB":"1","BSBSSSSBB":"2","SSSBBSSBS":"1","SSBBSSBSB":"1",
+        "SSSSSSSSS":"1","SSSSSSSBB":"2","SSSSSSBBS":"1","SSSSSBBSB":"2","SSSSBBSBS":"1",
+        "SSBBSBSBB":"1","SBBSBSBBB":"2","BSBSBBBSS":"1","BSBBBSSBS":"1","SSBSBSSSB":"1",
+        "SBSBSSSBB":"2","BSSSBBSSS":"1","SSSBBSSSB":"2","SSBBSSSBS":"1","SBBSSSBSS":"1",
+        "BBSSSBSSB":"1","BSSSBSSBB":"1","SBSSBBSSB":"1","BSSBBSSBB":"1","SSBBSSBBB":"1",
+        "SBBSSBBBB":"2","SSBBBBBBB":"2","BBBBBBBSB":"2","BBBBBSBBS":"2","BBBBSBBSS":"2",
+        "BSBBSSSBS":"2","SSSBSSBBB":"2","SSBSSBBBS":"1","SBBBSBSBS":"1","BBBSBSBSS":"1",
+        "BBSBSBSSB":"1","BSBSBSSBB":"1","SBSBBSSBB":"1","BSBBSSBBB":"2","SBBSSBBBS":"1",
+        "BSSBBBSBB":"1","SSBBBSBBB":"2","SBBBSBBBS":"1","BBBSBBBSB":"1","BBBSBSSBB":"2",
+        "BBSBSSBBS":"2","BSBSSBBSB":"1","SBSSBBSBB":"2","BSSBBSBBS":"2","SSBBSBBSS":"1",
+        "SBBSBBSSS":"1","BSBBSSSBB":"2","SBBSSSBBS":"2","BBSBSBSBS":"2","BSBSBSBSS":"1",
+        "SBSBSSSSS":"2","BSBSSSSSS":"2","SBSSSSSSS":"1","SSSSBBBSB":"1","SSSBBBSBS":"1",
+        "BBSBBBSBB":"1","BSBBBSBBB":"1","SBBBSBBBB":"1","SSSBSBSBB":"1","SSBSBSBBB":"1",
+        "SBSBSBBBB":"2","BSBSBBBBB":"1","SBSBBBBBB":"1","BBBBBBSBS":"2","BBBBBSBSS":"2",
+        "BBBBSBSSS":"2","BBBSBSSSS":"2","BBSBSSSSS":"1","BSBSSSSSB":"1","SBSSSSSBB":"2",
+        "SSBBBSBBS":"1","SBBSBSSBB":"2","BSSBBSSSB":"1","SSBBSSSBB":"2","BBBSBSBSB":"2",
+        "SBSBSBSSB":"1","SSSSSBSSB":"1","BBSSSBBSS":"2","SBBSSSBSB":"2","BSBBBBSBB":"2",
+        "SBBBBSBBS":"1","BBBBSBBSB":"2","BBSBBSBSB":"1","BSBBSBSBB":"2","SBBSBSBBS":"1",
+        "BBSBSBBSB":"2","BSBSBBSBB":"2","SBBSBBBBB":"1","SSSBSSSBB":"1","SSBSSSBBB":"2",
+        "SBSSSBBBS":"1","BSSBBBBSB":"1","SSBBBBSBB":"1","SBBBBSBBB":"2","BBBBSBBBS":"2",
+        "BBBSBBBSS":"1","SBBSSSSBS":"2","BBSSSSBSS":"1","SSSSBSSBS":"2","SSSBSSBSS":"1",
+        "SSBSSBSSB":"1","SBSSBSSBB":"2","BSSBSSBBS":"1","SSBSSBBSB":"1","BBSBBSSBB":"2",
+        "BSBBSSBBS":"1","BBSSBBSBS":"2","BSSBBSBSS":"1","SSBBSBSSB":"1","BBSSSSSSB":"2",
+        "SSSSSSBSS":"1","BBSBSSBSS":"1","BSBSSBSSB":"2","SBSSBSSBS":"1","BSBBBBBSB":"1",
+        "SBBBBBSBB":"1","SBBBBBBBB":"2","BBBBBBBBS":"2","BSSSBSSSB":"2","BSBBBBSBS":"2",
+        "SBBBBSBSS":"2","BSSSSSBBS":"2","SSSSSBBSS":"1","BBSSBBSSB":"2","BSSBBSSBS":"1",
+        "SSBSBBSBS":"1","SBSBBSBSB":"2","BSBBSBBSB":"2","SBBSBBSBS":"1","BSBSBBSBS":"1",
+        "BSBBSBSBS":"2","SBBSBSBSS":"2","BBSBSBSSS":"2"
+      };
+
+      const GOKU_PATTERNS = [
+        ["BIG","BIG","SMALL","BIG","SMALL","BIG"],
+        ["SMALL","BIG","BIG","SMALL","BIG","SMALL"],
+        ["BIG","SMALL","BIG","BIG","SMALL","SMALL"],
+        ["SMALL","SMALL","BIG","BIG","BIG","SMALL"],
+        ["BIG","BIG","BIG","SMALL","SMALL","BIG"],
+        ["SMALL","BIG","SMALL","BIG","BIG","SMALL"],
+        ["BIG","SMALL","SMALL","BIG","BIG","SMALL"],
+        ["SMALL","BIG","BIG","BIG","SMALL","BIG"],
+        ["BIG","SMALL","BIG","SMALL","BIG","BIG"],
+        ["SMALL","SMALL","BIG","SMALL","BIG","BIG"],
+        ["BIG","BIG","BIG","BIG","BIG","BIG","BIG","BIG"],
+        ["SMALL","SMALL","SMALL","SMALL","SMALL"]
+      ];
+
+      function predict(history) {
+        if (!history || history.length < 3) {
+          return { prediction: 'BIG', confidencePct: 60, name: 'WARMUP', source: 'TREND', numbers: [7, 8] };
+        }
+
+        const sidesNewest = history.map(h => h.size.toUpperCase());
+        const chrono = [...sidesNewest].reverse();
+
+        let bigStreak = 0, smallStreak = 0;
+        for (let i = 0; i < sidesNewest.length && sidesNewest[i] === 'BIG'; i++) bigStreak++;
+        for (let i = 0; i < sidesNewest.length && sidesNewest[i] === 'SMALL'; i++) smallStreak++;
+
+        let decision = null;
+        if (bigStreak >= 3 && bigStreak < 9) decision = { size: 'BIG', confidence: Math.min(95, 75 + bigStreak * 3), name: `DRAGON RIDE (${bigStreak}x BIG)`, source: 'GOKU STREAK' };
+        else if (bigStreak >= 9) decision = { size: 'SMALL', confidence: 96, name: `BIG EXHAUSTION (${bigStreak}x)`, source: 'GOKU STREAK' };
+        else if (smallStreak >= 2 && smallStreak < 5) decision = { size: 'SMALL', confidence: 78 + smallStreak * 4, name: `SMALL FLOW (${smallStreak}x SMALL)`, source: 'GOKU STREAK' };
+        else if (smallStreak >= 5) decision = { size: 'BIG', confidence: 94, name: `SMALL EXHAUSTION (${smallStreak}x)`, source: 'GOKU STREAK' };
+
+        if (!decision) {
+          let best = null;
+          for (const pat of GOKU_PATTERNS) {
+            for (let len = Math.min(pat.length - 1, chrono.length); len >= 3; len--) {
+              const tail = chrono.slice(-len);
+              let ok = true;
+              for (let i = 0; i < len; i++) if (tail[i] !== pat[i]) { ok = false; break; }
+              if (ok && pat[len] && (!best || len > best.len)) {
+                best = { size: pat[len], confidence: 70 + len * 5, len, name: `GOKU SEQ [${len} MATCH]`, source: 'GOKU' };
+              }
+            }
+          }
+          decision = best;
+        }
+
+        if (!decision) {
+          const pat9 = sidesNewest.slice(0, 9).map(s => s === 'BIG' ? 'B' : 'S').join('');
+          if (AURA_PATTERNS[pat9]) {
+            decision = { size: AURA_PATTERNS[pat9] === '1' ? 'SMALL' : 'BIG', confidence: 88, name: `AURA [${pat9}]`, source: 'AURA' };
+          } else {
+            const pat8 = pat9.slice(0, 8);
+            for (const key in AURA_PATTERNS) {
+              if (key.startsWith(pat8)) {
+                decision = { size: AURA_PATTERNS[key] === '1' ? 'SMALL' : 'BIG', confidence: 82, name: `AURA 8-MATCH [${pat8}]`, source: 'AURA' };
+                break;
+              }
+            }
+          }
+        }
+
+        if (!decision) {
+          let alt = true;
+          for (let i = 1; i < 4 && i < sidesNewest.length; i++) {
+            if (sidesNewest[i] === sidesNewest[i - 1]) { alt = false; break; }
+          }
+          if (alt) {
+            decision = { size: sidesNewest[0] === 'BIG' ? 'SMALL' : 'BIG', confidence: 84, name: 'ZIG-ZAG 1x1 FLOW', source: 'TREND' };
+          } else {
+            const bigs = sidesNewest.slice(0, 5).filter(s => s === 'BIG').length;
+            decision = { size: bigs >= 3 ? 'BIG' : 'SMALL', confidence: 72, name: 'MOMENTUM FLOW', source: 'TREND' };
+          }
+        }
+
+        const freq = Array(10).fill(0);
+        history.slice(0, 30).forEach(h => { if (h.number >= 0 && h.number <= 9) freq[h.number]++; });
+        const pool = (decision.size === 'BIG' ? [5, 6, 7, 8, 9] : [0, 1, 2, 3, 4]).sort((a, b) => freq[b] - freq[a]);
+
+        return {
+          prediction: decision.size,
+          confidencePct: decision.confidence,
+          name: decision.name,
+          source: decision.source,
+          numbers: [pool[0], pool[1]]
+        };
+      }
+
+      return { predict, totalAuraPatterns: Object.keys(AURA_PATTERNS).length };
+    })();
+
+    const STORAGE_LEDGER = 'alx_p8_ledger_v1';
+    const STORAGE_LEARN = 'alx_p8_self_learn_v1';
+    const STORAGE_THEME = 'alx_p8_theme';
+
+    const DEFAULT_LEARN = () => ({
+      weights: { phantom: 0.28, renox: 0.27, hidan: 0.20, goku: 0.25 },
+      stats: {
+        phantom: { w: 0, l: 0 },
+        renox: { w: 0, l: 0 },
+        hidan: { w: 0, l: 0 },
+        goku: { w: 0, l: 0 }
+      },
+      mistakes: {},
+      guardSaves: 0,
+      guardTotal: 0
+    });
+
+    function loadLearnState() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_LEARN) || 'null');
+        if (!raw || !raw.weights) return DEFAULT_LEARN();
+        return { ...DEFAULT_LEARN(), ...raw };
+      } catch {
+        return DEFAULT_LEARN();
+      }
+    }
+
+    function saveLearnState(learn) {
+      localStorage.setItem(STORAGE_LEARN, JSON.stringify(learn));
+    }
+
+    function normalizeWeights(w) {
+      const keys = ['phantom', 'renox', 'hidan', 'goku'];
+      let sum = 0;
+      keys.forEach(k => {
+        w[k] = clamp(w[k], 0.10, 0.45);
+        sum += w[k];
+      });
+      keys.forEach(k => { w[k] = w[k] / (sum || 1); });
+      return w;
+    }
+
+    function buildTrendSignature(phantom, records) {
+      const pat3 = records.slice(0, 3).map(r => r.size === 'BIG' ? 'B' : 'S').join('');
+      const shortDir = phantom.shortTrendP >= 0.56 ? 'BIG_SHORT' : phantom.shortTrendP <= 0.44 ? 'SMALL_SHORT' : 'MIX_SHORT';
+      const longDir = phantom.longTrendP >= 0.55 ? 'BIG_LONG' : phantom.longTrendP <= 0.45 ? 'SMALL_LONG' : 'MIX_LONG';
+      const trendKey = `${phantom.regime}|${shortDir}|${pat3}`;
+      const regimeKey = `${phantom.regime}|${shortDir}`;
+      return { pat3, shortDir, longDir, trendKey, regimeKey };
+    }
+
+    function runMasterEnsemble(records, learnState, jackpotThreshold) {
+      const phantom = PhantomEngine.analyse(records);
+      const renox = RenoxEngine.predict(records, { jackpotThreshold });
+      const hidan = HidanEngine.predict(records);
+      const goku = GokuAuraEngine.predict(records);
+      const sig = buildTrendSignature(phantom, records);
+
+      const engineVotes = [
+        { id: 'phantom', label: 'Phantom Core', pred: phantom.prediction, conf: Math.round(50 + phantom.confidence * 50), weight: learnState.weights.phantom, nums: phantom.numbers },
+        { id: 'renox', label: 'Renox v2.0', pred: renox.prediction, conf: renox.confidencePct, weight: learnState.weights.renox, nums: renox.numbers },
+        { id: 'hidan', label: 'Hidan Trio', pred: hidan.prediction, conf: hidan.confidencePct, weight: learnState.weights.hidan, nums: hidan.numbers },
+        { id: 'goku', label: 'Goku + Aura', pred: goku.prediction, conf: goku.confidencePct, weight: learnState.weights.goku, nums: goku.numbers }
+      ];
+
+      const shortCall = phantom.shortTrendP >= 0.5 ? 'BIG' : 'SMALL';
+      const longCall = phantom.longTrendP >= 0.5 ? 'BIG' : 'SMALL';
+      const trendAligned = shortCall === longCall;
+
+      let bigWeight = 0, smallWeight = 0;
+      engineVotes.forEach(v => {
+        const s = v.weight * (v.conf / 100);
+        if (v.pred === 'BIG') bigWeight += s; else smallWeight += s;
+      });
+      if (trendAligned) {
+        if (shortCall === 'BIG') bigWeight += 0.05; else smallWeight += 0.05;
+      }
+
+      const totalW = bigWeight + smallWeight || 1;
+      const bigProb = bigWeight / totalW;
+      const rawMasterSize = bigProb >= 0.5 ? 'BIG' : 'SMALL';
+      const agreementCount = engineVotes.filter(v => v.pred === rawMasterSize).length;
+      const masterConfidence = Math.min(98, Math.round(Math.max(bigProb, 1 - bigProb) * 100 + (agreementCount === 4 ? 6 : 0)));
+
+      const exactKey = `${sig.trendKey}|${rawMasterSize}`;
+      const broadKey = `${sig.regimeKey}|${rawMasterSize}`;
+      const mExact = learnState.mistakes[exactKey];
+      const mBroad = learnState.mistakes[broadKey];
+      const guardTriggered = Boolean((mExact && mExact.cooldown > 0) || (mBroad && mBroad.cooldown > 0));
+
+      let action = rawMasterSize;
+      let guardReason = '';
+      if (guardTriggered) {
+        action = 'SKIP';
+        const ref = (mExact && mExact.cooldown > 0) ? mExact : mBroad;
+        guardReason = `Self-Learn Guard: "${sig.regimeKey}" (${sig.pat3}) caused ${ref.losses} recent loss(es) on ${rawMasterSize} — skipping repeat trade until trend shifts.`;
+      }
+
+      const fusedScores = Array(10).fill(0);
+      phantom.rank.forEach(item => { fusedScores[item.n] += item.p * 32; });
+      if (renox.numbers.length >= 2) {
+        fusedScores[renox.numbers[0]] += 5.4 * (learnState.weights.renox / 0.25);
+        fusedScores[renox.numbers[1]] += 3.8 * (learnState.weights.renox / 0.25);
+      }
+      renox.rangeScores.forEach(r => { fusedScores[r.n] += r.score * 0.65; });
+      fusedScores[hidan.numbers[0]] += 4.0 * (learnState.weights.hidan / 0.25);
+      fusedScores[hidan.numbers[1]] += 3.2 * (learnState.weights.hidan / 0.25);
+      fusedScores[goku.numbers[0]] += 4.5 * (learnState.weights.goku / 0.25);
+      fusedScores[goku.numbers[1]] += 3.5 * (learnState.weights.goku / 0.25);
+
+      for (let n = 0; n <= 9; n++) {
+        if (agreementCount >= 3 && ((rawMasterSize === 'BIG' && n >= 5) || (rawMasterSize === 'SMALL' && n < 5))) {
+          fusedScores[n] += 1.4;
+        }
+      }
+      const totalScore = fusedScores.reduce((a, b) => a + b, 0) || 1;
+      const rankedNumbers = fusedScores.map((s, n) => ({ n, pct: (s / totalScore) * 100 })).sort((a, b) => b.pct - a.pct);
+
+      return {
+        action,
+        rawMasterSize,
+        masterConfidence,
+        agreementCount,
+        guardTriggered,
+        guardReason,
+        exactKey,
+        broadKey,
+        sig,
+        shortCall,
+        longCall,
+        trendAligned,
+        isJackpotSignal: !guardTriggered && (renox.isJackpot || (agreementCount === 4 && masterConfidence >= Math.round(jackpotThreshold * 100))),
+        masterNumbers: [rankedNumbers[0].n, rankedNumbers[1].n],
+        rankedNumbers,
+        oppositeNumber: hidan.opposite,
+        phantom,
+        renox,
+        hidan,
+        goku,
+        engineVotes
+      };
+    }
+
+    function learnFromSettledRound(entry, actualSize, learnState) {
+      for (const key in learnState.mistakes) {
+        if (learnState.mistakes[key].cooldown > 0) {
+          learnState.mistakes[key].cooldown = Math.max(0, learnState.mistakes[key].cooldown - 1);
+        }
+      }
+
+      if (entry.engineCalls) {
+        for (const id of ['phantom', 'renox', 'hidan', 'goku']) {
+          const pred = entry.engineCalls[id];
+          if (!pred) continue;
+          if (pred === actualSize) {
+            learnState.stats[id].w++;
+            learnState.weights[id] *= 1.07;
+          } else {
+            learnState.stats[id].l++;
+            learnState.weights[id] *= 0.89;
+          }
+        }
+        normalizeWeights(learnState.weights);
+      }
+
+      if (entry.action === 'SKIP') {
+        learnState.guardTotal++;
+        if (entry.rawMasterSize !== actualSize) {
+          learnState.guardSaves++;
+          return 'SAVED';
+        } else {
+          if (entry.exactKey && learnState.mistakes[entry.exactKey]) learnState.mistakes[entry.exactKey].cooldown = 0;
+          if (entry.broadKey && learnState.mistakes[entry.broadKey]) learnState.mistakes[entry.broadKey].cooldown = 0;
+          return 'SKIPPED_WIN';
+        }
+      }
+
+      const won = entry.rawMasterSize === actualSize;
+      if (!won) {
+        const prevExact = learnState.mistakes[entry.exactKey] || { losses: 0, cooldown: 0, key: entry.exactKey, side: entry.rawMasterSize };
+        learnState.mistakes[entry.exactKey] = {
+          key: entry.exactKey,
+          side: entry.rawMasterSize,
+          losses: prevExact.losses + 1,
+          cooldown: 3,
+          lastAt: Date.now()
+        };
+        const prevBroad = learnState.mistakes[entry.broadKey] || { losses: 0, cooldown: 0, key: entry.broadKey, side: entry.rawMasterSize };
+        learnState.mistakes[entry.broadKey] = {
+          key: entry.broadKey,
+          side: entry.rawMasterSize,
+          losses: prevBroad.losses + 1,
+          cooldown: 1,
+          lastAt: Date.now()
+        };
+      } else {
+        if (learnState.mistakes[entry.exactKey]) learnState.mistakes[entry.exactKey].cooldown = 0;
+        if (learnState.mistakes[entry.broadKey]) learnState.mistakes[entry.broadKey].cooldown = 0;
+      }
+      return won ? 'WIN' : 'LOSS';
+    }
+
+    const APIS = {
+      sky30s: 'https://sky-predictor-1012593186417.asia-southeast1.run.app/api/wingo-history-30s-100',
+      ar1m: 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json'
+    };
+
+    let state = {
+      records: [],
+      isFetching: false,
+      lastPeriod: '',
+      lastRenderKey: '',
+      historyFilter: 'all',
+      ledgerSearch: '',
+      jackpotThreshold: 0.75,
+      apiMode: 'auto',
+      ledger: loadLedger(),
+      learn: loadLearnState(),
+      analysis: null
+    };
+
+    function loadLedger() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_LEDGER) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+      } catch { return []; }
+    }
+
+    function saveLedger() {
+      localStorage.setItem(STORAGE_LEDGER, JSON.stringify(state.ledger.slice(0, 300)));
+    }
+
+    function computeStreakStats(ledger) {
+      const activeSettled = [...ledger].reverse().filter(x =>
+        x.actualNum !== null && (x.status === 'SURE SHOT' || x.status === 'JACKPOT' || x.status === 'LOSS')
+      );
+
+      let wins = 0, losses = 0, jackpots = 0;
+      let curWin = 0, curLoss = 0, maxWin = 0, maxLoss = 0;
+
+      for (const item of activeSettled) {
+        if (item.status === 'JACKPOT') jackpots++;
+        if (item.status === 'SURE SHOT' || item.status === 'JACKPOT') {
+          wins++;
+          curWin++;
+          curLoss = 0;
+          if (curWin > maxWin) maxWin = curWin;
+        } else {
+          losses++;
+          curLoss++;
+          curWin = 0;
+          if (curLoss > maxLoss) maxLoss = curLoss;
+        }
+      }
+
+      const currentStreak = curWin > 0 ? `${curWin}W` : curLoss > 0 ? `${curLoss}L` : '—';
+      const winRate = activeSettled.length ? Math.round((wins / activeSettled.length) * 100) : 0;
+
+      return {
+        settled: activeSettled.length,
+        wins,
+        losses,
+        jackpots,
+        winRate,
+        maxWin,
+        maxLoss,
+        currentStreak
+      };
+    }
+
+    function normalizePayload(payload) {
+      const arr = Array.isArray(payload)
+        ? payload
+        : (payload?.data?.list || payload?.data?.records || payload?.data || payload?.list || payload?.records || payload?.result?.list || []);
+      if (!Array.isArray(arr)) return [];
+      return arr.map(x => {
+        if (typeof x === 'number' || typeof x === 'string') {
+          const n = Number(x);
+          return Number.isInteger(n) && n >= 0 && n <= 9 ? { number: n, size: n >= 5 ? 'BIG' : 'SMALL', period: '' } : null;
+        }
+        const raw = x.number ?? x.openNumber ?? x.result ?? x.code ?? x.value ?? x.open_code ?? x.openCode;
+        const m = String(raw ?? '').match(/\d/);
+        if (!m) return null;
+        const n = Number(m[0]);
+        if (n < 0 || n > 9) return null;
+        return {
+          number: n,
+          size: n >= 5 ? 'BIG' : 'SMALL',
+          period: String(x.issueNumber ?? x.issue ?? x.issue_number ?? x.period ?? x.drawNo ?? x.id ?? '')
+        };
+      }).filter(Boolean).slice(0, 100);
+    }
+
+    function computeNextPeriod(period) {
+      if (!period) return 'NEXT';
+      try {
+        if (/^\d+$/.test(period)) return (BigInt(period) + 1n).toString();
+        const m = period.match(/^(.*?)(\d+)$/);
+        if (m) return m[1] + String(Number(m[2]) + 1);
+      } catch { /* fallback */ }
+      return period + '+1';
+    }
+
+    async function fetchFromSource() {
+      const trySky = async () => {
+        const res = await fetch(APIS.sky30s + '?_=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('Sky 30s HTTP ' + res.status);
+        return normalizePayload(await res.json());
+      };
+      const tryAr = async () => {
+        const res = await fetch(APIS.ar1m + '?ts=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('AR 1M HTTP ' + res.status);
+        return normalizePayload(await res.json());
+      };
+
+      if (state.apiMode === 'sky30s') return { data: await trySky(), source: 'Sky WinGo 30s' };
+      if (state.apiMode === 'ar1m') return { data: await tryAr(), source: 'AR-Lottery 1M' };
+
+      try {
+        const data = await trySky();
+        if (data.length >= 20) return { data, source: 'Sky WinGo 30s' };
+        throw new Error('Insufficient Sky records');
+      } catch {
+        const data = await tryAr();
+        return { data, source: 'AR-Lottery 1M' };
+      }
+    }
+
+    async function autoSync() {
+      if (state.isFetching) return;
+      state.isFetching = true;
+      try {
+        const { data, source } = await fetchFromSource();
+        if (data.length < 20) throw new Error('Fewer than 20 valid records returned.');
+        state.records = data;
+        processRecords(data);
+        $('connectionPill').className = 'chip chip-live';
+        $('connectionText').textContent = 'LIVE AUTO';
+        $('statusMessage').textContent = `Auto-synced ${new Date().toLocaleTimeString('en-GB')} · ${data.length} draws · ${source}`;
+      } catch (err) {
+        $('connectionPill').className = 'chip chip-err';
+        $('connectionText').textContent = 'API RETRYING';
+        $('statusMessage').innerHTML = `<span style="color:var(--error); font-weight:600;">${escapeHtml(err.message)}</span> · Auto-retrying every 5s (or click Demo Preview).`;
+      } finally {
+        state.isFetching = false;
+      }
+    }
+
+    function loadDemoData() {
+      let seed = Date.now() % 100000;
+      const base = 202611170100 + Math.floor(Math.random() * 500);
+      const demo = Array.from({ length: 100 }, (_, i) => {
+        seed = (seed * 9301 + 49297) % 233280;
+        const number = Math.floor((seed / 233280) * 10);
+        return { number, size: number >= 5 ? 'BIG' : 'SMALL', period: String(base - i) };
+      });
+      state.records = demo;
+      processRecords(demo);
+      $('connectionPill').className = 'chip chip-demo';
+      $('connectionText').textContent = 'DEMO MODE';
+      $('statusMessage').textContent = '100-draw synthetic demo running automatically across all 4 engines + Self-Learner.';
+      showToast('Demo Data Loaded', 'All engines & Self-Learning Guard updated.', 'gold');
+    }
+
+    function processRecords(data) {
+      const map = new Map(data.filter(x => x.period).map(x => [x.period, x]));
+      let settledAny = false;
+
+      state.ledger = state.ledger.map(entry => {
+        if (entry.actualNum !== null || !entry.period || !map.has(entry.period)) return entry;
+        const actual = map.get(entry.period);
+        const learnOutcome = learnFromSettledRound(entry, actual.size, state.learn);
+        settledAny = true;
+
+        let status = 'LOSS';
+        if (entry.action === 'SKIP') {
+          status = learnOutcome === 'SAVED' ? 'SAVED' : 'GUARDED';
+        } else {
+          const numHit = (entry.masterNums && entry.masterNums.includes(actual.number)) || entry.oppNum === actual.number;
+          if (numHit) status = 'JACKPOT';
+          else if (entry.rawMasterSize === actual.size) status = 'SURE SHOT';
+        }
+
+        return { ...entry, actualNum: actual.number, actualSize: actual.size, status };
+      });
+
+      if (settledAny) {
+        saveLedger();
+        saveLearnState(state.learn);
+      }
+
+      const analysis = runMasterEnsemble(data, state.learn, state.jackpotThreshold);
+      state.analysis = analysis;
+
+      const latestPeriod = data[0]?.period || '';
+      const nextPeriod = computeNextPeriod(latestPeriod);
+      if (latestPeriod && nextPeriod !== state.lastPeriod) {
+        state.lastPeriod = nextPeriod;
+        state.ledger.unshift({
+          period: nextPeriod,
+          action: analysis.action,
+          rawMasterSize: analysis.rawMasterSize,
+          masterNums: analysis.masterNumbers,
+          oppNum: analysis.oppositeNumber,
+          trendContext: `${analysis.phantom.regime} · ${analysis.sig.pat3}`,
+          exactKey: analysis.exactKey,
+          broadKey: analysis.broadKey,
+          engineCalls: {
+            phantom: analysis.phantom.prediction,
+            renox: analysis.renox.prediction,
+            hidan: analysis.hidan.prediction,
+            goku: analysis.goku.prediction
+          },
+          actualNum: null,
+          actualSize: null,
+          status: 'WAIT',
+          at: Date.now()
+        });
+        saveLedger();
+      }
+
+      requestAnimationFrame(() => renderAll(analysis, data, nextPeriod));
+    }
+
+    function renderAll(a, data, nextPeriod) {
+      const streaks = computeStreakStats(state.ledger);
+
+      $('statTotalWins').textContent = streaks.wins;
+      $('statWinRate').textContent = streaks.settled ? `Win Rate: ${streaks.winRate}%` : 'Win Rate: —%';
+      $('statTotalLosses').textContent = streaks.losses;
+      $('statSettledCount').textContent = `${streaks.settled} settled`;
+      $('statMaxWinStreak').textContent = streaks.maxWin;
+      $('statCurrentStreak').textContent = `Current: ${streaks.currentStreak}`;
+      $('statMaxLossStreak').textContent = streaks.maxLoss;
+      $('statGuardSaves').textContent = state.learn.guardSaves;
+      $('statGuardTotal').textContent = `${state.learn.guardTotal} guarded skips`;
+      $('statNumHits').textContent = streaks.jackpots;
+      $('statNumRate').textContent = streaks.settled ? `Number rate: ${Math.round((streaks.jackpots / streaks.settled) * 100)}%` : 'Number rate: —%';
+
+      const shortNext = nextPeriod.length > 6 ? nextPeriod.slice(-6) : nextPeriod;
+      $('nextPeriodDisplay').textContent = '#' + shortNext;
+      $('regimePill').textContent = 'REGIME: ' + a.phantom.regime;
+      $('trendSummaryPill').textContent = `S:${a.shortCall} · L:${a.longCall}`;
+
+      const guardBanner = $('guardBanner');
+      if (a.guardTriggered) {
+        guardBanner.classList.remove('hidden');
+        $('guardBannerText').textContent = a.guardReason;
+      } else {
+        guardBanner.classList.add('hidden');
+      }
+
+      const sizeEl = $('masterSize');
+      sizeEl.textContent = a.action === 'SKIP' ? 'SKIP · GUARDED' : a.action;
+      sizeEl.className = 'call-size ' + (a.action === 'SKIP' ? 'SKIP' : a.action);
+
+      $('masterConfPill').textContent = `Confidence: ${a.masterConfidence}%`;
+      $('masterAgreePill').textContent = `Consensus: ${a.agreementCount}/4`;
+      $('jackpotAlertPill').classList.toggle('hidden', !a.isJackpotSignal);
+      $('masterSummary').textContent = a.guardTriggered
+        ? `Raw vote (${a.rawMasterSize}) blocked by Mistake Memory · Waiting for safer trend shift.`
+        : `${a.goku.name} · Renox ${a.renox.agreement}/8 · Short/Long ${a.trendAligned ? 'Aligned' : 'Diverged'}`;
+      $('streakPill').textContent = `Draw Streak: ${a.renox.streak.count}x ${a.renox.streak.side}`;
+
+      $('masterNum1').textContent = a.masterNumbers[0];
+      $('masterNum1Meta').textContent = `${a.rankedNumbers[0].pct.toFixed(1)}% fused`;
+      $('masterNum2').textContent = a.masterNumbers[1];
+      $('masterNum2Meta').textContent = `${a.rankedNumbers[1].pct.toFixed(1)}% fused`;
+
+      const bigC = data.filter(x => x.size === 'BIG').length;
+      $('bigSmallSplit').textContent = `BIG ${bigC} · SMALL ${data.length - bigC}`;
+      $('liveTape').innerHTML = data.slice(0, 16).map((x, idx) =>
+        `<div class="dot ${x.size.toLowerCase()} ${idx === 0 ? 'newest' : ''}">${x.number}</div>`
+      ).join('');
+
+      $('entropyPill').textContent = `Entropy: ${a.phantom.entropyVal.toFixed(2)}`;
+      $('trendAzGrid').innerHTML = [
+        { label: 'Ultra-Short (Last 5)', val: pct(a.phantom.r5), sub: a.phantom.r5 >= 0.5 ? 'BIG Bias' : 'SMALL Bias' },
+        { label: 'Short Trend (Last 10)', val: pct(a.phantom.r10), sub: `Flip rate: ${pct(a.phantom.alternation)}` },
+        { label: 'Mid-Long (Last 30)', val: pct(a.phantom.r30), sub: a.phantom.r30 >= 0.5 ? 'BIG Trend' : 'SMALL Trend' },
+        { label: 'Macro Long (Last 100)', val: pct(a.phantom.r100), sub: a.trendAligned ? 'Short & Long Aligned' : 'Regime Divergence' }
+      ].map(item => `
+        <div class="metric">
+          <div class="metric-l">${item.label}</div>
+          <div class="metric-v" style="font-size:17px;">${item.val}</div>
+          <div class="metric-s">${item.sub}</div>
+        </div>
+      `).join('');
+
+      $('overviewEngineGrid').innerHTML = a.engineVotes.map(v => {
+        const st = state.learn.stats[v.id];
+        const tot = st.w + st.l;
+        const acc = tot ? Math.round((st.w / tot) * 100) + '%' : 'Learning';
+        return `
+          <div class="eng">
+            <div class="eng-hd">
+              <div>
+                <div class="eng-name">${escapeHtml(v.label)}</div>
+                <div style="font-size:10.5px; color:var(--text-3); margin-top:2px;">
+                  Self-Learn Weight: <b>${Math.round(v.weight * 100)}%</b> · Live Acc: ${acc} (${st.w}W/${st.l}L)
+                </div>
+              </div>
+              <div class="eng-nums">
+                <span class="chip" style="color:${v.pred === 'BIG' ? 'var(--gold)' : 'var(--accent-2)'};">${v.pred} ${v.conf}%</span>
+                <span class="npill">${v.nums[0]}</span>
+                <span class="npill">${v.nums[1]}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      $('gokuSourcePill').textContent = `Active: ${a.goku.name}`;
+      $('engPhantomNums').innerHTML = `<span class="npill">${a.phantom.numbers[0]}</span><span class="npill">${a.phantom.numbers[1]}</span>`;
+      $('engPhantomDetails').innerHTML = a.phantom.components.map(c =>
+        `<div class="bar-row"><span>${c.name}</span><div class="bar-track"><div class="bar-fill" style="width:${(c.p * 100).toFixed(1)}%"></div></div><b>${pct(c.p)}</b></div>`
+      ).join('');
+
+      $('engRenoxNums').innerHTML = `<span class="npill">${a.renox.numbers[0]}</span><span class="npill">${a.renox.numbers[1]}</span>`;
+      $('engRenoxDetails').innerHTML = Object.entries(a.renox.factors).map(([k, v]) =>
+        `<div class="bar-row"><span style="text-transform:uppercase;">${k}</span><div class="bar-track"><div class="bar-fill" style="width:${(v.big * 100).toFixed(1)}%"></div></div><b>${v.big >= v.small ? 'BIG' : 'SML'}</b></div>`
+      ).join('');
+
+      $('engHidanNums').innerHTML = `<span class="npill">${a.hidan.numbers[0]}</span><span class="npill">${a.hidan.numbers[1]}</span>`;
+      $('engHidanDetails').innerHTML = `
+        <div class="tags">
+          <span class="tag">CRM: ${a.hidan.signals.crm}</span>
+          <span class="tag">PSM: ${a.hidan.signals.psm}</span>
+          <span class="tag">MDR: ${a.hidan.signals.mdr}</span>
+        </div>
+      `;
+
+      $('engGokuNums').innerHTML = `<span class="npill">${a.goku.numbers[0]}</span><span class="npill">${a.goku.numbers[1]}</span>`;
+      $('engGokuDetails').innerHTML = `
+        <div class="tags">
+          <span class="tag">${escapeHtml(a.goku.source)}</span>
+          <span class="tag">${escapeHtml(a.goku.name)}</span>
+          <span class="tag">Conf: ${a.goku.confidencePct}%</span>
+          <span class="tag">Aura DB: ${GokuAuraEngine.totalAuraPatterns}</span>
+        </div>
+      `;
+
+      const maxPct = a.rankedNumbers[0]?.pct || 1;
+      $('numberRankBars').innerHTML = a.rankedNumbers.map((item, idx) =>
+        `<div class="bar-row"><span>#${item.n} (${item.n >= 5 ? 'BIG' : 'SML'})${idx < 2 ? ' ★' : ''}</span><div class="bar-track"><div class="bar-fill" style="width:${((item.pct / maxPct) * 100).toFixed(1)}%"></div></div><b>${item.pct.toFixed(1)}%</b></div>`
+      ).join('');
+
+      $('regimeBars').innerHTML = a.phantom.rates.map(r =>
+        `<div class="bar-row"><span>Big · Last ${r.w}</span><div class="bar-track"><div class="bar-fill" style="width:${(r.p * 100).toFixed(1)}%"></div></div><b>${pct(r.p)}</b></div>`
+      ).join('');
+
+      $('contextBars').innerHTML = a.phantom.ctx.map(x =>
+        `<div class="bar-row"><span>${x.k}-bit · ${x.key}</span><div class="bar-track"><div class="bar-fill" style="width:${(x.shrunk * 100).toFixed(1)}%"></div></div><b>${x.n} hits</b></div>`
+      ).join('');
+
+      $('fingerprintCloud').innerHTML = a.phantom.ctx.map(x =>
+        `<span class="tag">${x.k}-gram [${x.key}] → ${x.p === null ? 'none' : pct(x.p) + ' BIG'} (${x.n})</span>`
+      ).join('');
+
+      const bt = PhantomEngine.backtest(a.phantom.nums);
+      $('backtestBody').innerHTML = bt.map(x =>
+        `<tr><td style="font-family:var(--font-body); font-weight:600;">${escapeHtml(x.name)}</td><td>${x.correct}</td><td>${x.tested}</td><td style="color:${x.rate >= 0.5 ? 'var(--success)' : 'var(--text-2)'}; font-weight:700;">${pct(x.rate)}</td></tr>`
+      ).join('');
+
+      const mistakeList = Object.values(state.learn.mistakes).sort((x, y) => y.cooldown - x.cooldown || y.losses - x.losses);
+      const activeGuards = mistakeList.filter(m => m.cooldown > 0).length;
+      $('activeGuardsCount').textContent = `${activeGuards} Active Guard${activeGuards === 1 ? '' : 's'}`;
+      $('mistakeMemoryBody').innerHTML = mistakeList.slice(0, 15).map(m => `
+        <tr>
+          <td>${escapeHtml(m.key)}</td>
+          <td style="font-weight:700; color:${m.side === 'BIG' ? 'var(--gold)' : 'var(--accent-2)'};">${escapeHtml(m.side)}</td>
+          <td>${m.losses}</td>
+          <td>${m.cooldown} rounds</td>
+          <td><span class="st ${m.cooldown > 0 ? 'st-saved' : 'st-win'}">${m.cooldown > 0 ? 'GUARDING' : 'CLEARED'}</span></td>
+        </tr>
+      `).join('') || '<tr><td colspan="5" class="empty">No mistake signatures logged yet. Self-learning adapts automatically after losses.</td></tr>';
+
+      renderHistoryView(data);
+      renderLedgerView(streaks);
+    }
+
+    function renderHistoryView(data) {
+      const filtered = state.historyFilter === 'all' ? data : data.filter(x => x.size === state.historyFilter);
+      $('historyMatrix').innerHTML = filtered.length
+        ? filtered.map((x, i) => `<div class="cell ${x.size.toLowerCase()}">${x.number}<em>#${i + 1}</em></div>`).join('')
+        : '<div class="empty" style="grid-column:1/-1;">No draws match filter.</div>';
+
+      $('drawTableBody').innerHTML = filtered.slice(0, 40).map((x, i) => `
+        <tr>
+          <td>#${i + 1}</td>
+          <td>${escapeHtml(x.period || '—')}</td>
+          <td style="font-weight:700;">${x.number}</td>
+          <td style="color:${x.size === 'BIG' ? 'var(--gold)' : 'var(--accent-2)'}; font-weight:700;">${x.size}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="4" class="empty">No records.</td></tr>';
+    }
+
+    function renderLedgerView(streaks = computeStreakStats(state.ledger)) {
+      $('ledgerSettled').textContent = streaks.settled;
+      $('ledgerWins').textContent = streaks.wins;
+      $('ledgerLosses').textContent = streaks.losses;
+      $('ledgerMaxWin').textContent = streaks.maxWin;
+      $('ledgerMaxLoss').textContent = streaks.maxLoss;
+      $('ledgerGuardSaves').textContent = state.learn.guardSaves;
+
+      const q = state.ledgerSearch.trim().toLowerCase();
+      const rows = q
+        ? state.ledger.filter(x =>
+            String(x.period).toLowerCase().includes(q) ||
+            String(x.action).toLowerCase().includes(q) ||
+            String(x.rawMasterSize).toLowerCase().includes(q) ||
+            String(x.status).toLowerCase().includes(q)
+          )
+        : state.ledger;
+
+      $('ledgerBody').innerHTML = rows.slice(0, 60).map(x => {
+        const chip = x.status === 'JACKPOT' ? 'st-jp'
+          : x.status === 'SURE SHOT' ? 'st-win'
+          : x.status === 'LOSS' ? 'st-loss'
+          : (x.status === 'SAVED' || x.status === 'GUARDED') ? 'st-saved'
+          : 'st-wait';
+        const pShort = x.period && x.period.length > 7 ? x.period.slice(-7) : (x.period || 'pending');
+        const callText = x.action === 'SKIP' ? `SKIP (${x.rawMasterSize})` : x.action;
+        return `
+          <tr>
+            <td>#${escapeHtml(pShort)}</td>
+            <td style="font-weight:700; color:${x.action === 'SKIP' ? 'var(--amber)' : x.action === 'BIG' ? 'var(--gold)' : 'var(--accent-2)'};">${escapeHtml(callText)}</td>
+            <td><strong>${x.masterNums ? x.masterNums.join(' · ') : '—'}</strong></td>
+            <td style="font-size:10.5px; color:var(--text-2);">${escapeHtml(x.trendContext || '—')}</td>
+            <td>${x.actualNum !== null ? `${x.actualSize} (${x.actualNum})` : '—'}</td>
+            <td><span class="st ${chip}">${escapeHtml(x.status)}</span></td>
+          </tr>
+        `;
+      }).join('') || '<tr><td colspan="6" class="empty">Waiting for live draws to record automatic predictions…</td></tr>';
+    }
+
+    function showToast(title, detail = '', tone = 'info') {
+      const el = document.createElement('div');
+      el.className = 'toast';
+      const color = tone === 'success' ? 'var(--success)' : tone === 'error' ? 'var(--error)' : tone === 'gold' ? 'var(--gold)' : 'var(--accent-2)';
+      el.innerHTML = `<span style="color:${color};">${svgIcon('zap', 16)}</span><div><div style="font-weight:700;">${escapeHtml(title)}</div>${detail ? `<div style="font-size:10.5px;color:var(--text-2);">${escapeHtml(detail)}</div>` : ''}</div>`;
+      $('toastStack').appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem(STORAGE_THEME, theme);
+      const isDark = theme === 'dark';
+      $('themeToggleBtn').innerHTML = svgIcon(isDark ? 'sun' : 'moon', 17);
+      $('sidebarThemeBtn').innerHTML = `${svgIcon(isDark ? 'sun' : 'moon', 16)}<span>${isDark ? 'Light Mode' : 'Dark Mode'}</span>`;
+    }
+
+    function switchView(viewId) {
+      document.querySelectorAll('.view').forEach(s => s.classList.toggle('active', s.id === 'view-' + viewId));
+      document.querySelectorAll('.nav-item[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === viewId));
+    }
+
+    function openConfirmModal(title, desc, onConfirm) {
+      $('modalTitle').textContent = title;
+      $('modalDesc').textContent = desc;
+      $('confirmModal').classList.remove('hidden');
+      const close = () => $('confirmModal').classList.add('hidden');
+      $('modalCancel').onclick = close;
+      $('modalConfirm').onclick = () => { close(); onConfirm(); };
+    }
+
+    const NAV_ITEMS = [
+      { id: 'overview', label: 'Overview', icon: 'layout' },
+      { id: 'engines', label: 'A–Z Engines', icon: 'cpu' },
+      { id: 'lab', label: 'Self-Learn Lab', icon: 'activity' },
+      { id: 'history', label: '100 Matrix', icon: 'grid' },
+      { id: 'ledger', label: 'Streaks & Ledger', icon: 'list' }
+    ];
+
+    function initApp() {
+      $('sidebarBrandIcon').innerHTML = svgIcon('zap', 19);
+      $('topbarBrandIcon').innerHTML = svgIcon('zap', 19);
+      $('timerIcon').innerHTML = svgIcon('clock', 14);
+      $('guardBannerIcon').innerHTML = svgIcon('alert', 17);
+      $('searchIconWrap').innerHTML = svgIcon('search', 15);
+
+      document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
+        const item = NAV_ITEMS.find(n => n.id === btn.dataset.view);
+        if (item) btn.innerHTML = `${svgIcon(item.icon, 17)}<span>${item.label}</span>`;
+        btn.onclick = () => switchView(btn.dataset.view);
+      });
+
+      document.querySelectorAll('[data-jump]').forEach(btn => {
+        btn.onclick = () => switchView(btn.dataset.jump);
+      });
+
+      const toggleTheme = () => applyTheme((document.documentElement.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark');
+      $('themeToggleBtn').onclick = toggleTheme;
+      $('sidebarThemeBtn').onclick = toggleTheme;
+      $('settingsThemeBtn').onclick = toggleTheme;
+
+      $('apiSelector').onchange = e => { state.apiMode = e.target.value; autoSync(); };
+      $('demoBtn').onclick = loadDemoData;
+
+      document.querySelectorAll('[data-hist-filter]').forEach(btn => {
+        btn.onclick = () => {
+          state.historyFilter = btn.dataset.histFilter;
+          document.querySelectorAll('[data-hist-filter]').forEach(b => b.classList.toggle('active', b === btn));
+          if (state.records.length) renderHistoryView(state.records);
+        };
+      });
+
+      $('ledgerSearch').oninput = e => { state.ledgerSearch = e.target.value; renderLedgerView(); };
+
+      $('clearLedgerBtn').onclick = () => {
+        openConfirmModal('Clear Ledger & Streaks?', 'Resets saved round history and win/loss streak counters.', () => {
+          state.ledger = [];
+          saveLedger();
+          renderLedgerView();
+          if (state.analysis && state.records.length) renderAll(state.analysis, state.records, computeNextPeriod(state.records[0]?.period || ''));
+        });
+      };
+
+      $('resetLearnBtn').onclick = () => {
+        openConfirmModal('Reset Self-Learning Memory?', 'Resets adaptive engine weights and clears guarded mistake memory.', () => {
+          state.learn = DEFAULT_LEARN();
+          saveLearnState(state.learn);
+          if (state.records.length) processRecords(state.records);
+          showToast('Self-Learning Reset', 'Engine weights restored to baseline.', 'info');
+        });
+      };
+
+      $('jackpotThresholdRange').oninput = e => {
+        state.jackpotThreshold = Number(e.target.value);
+        $('jackpotThresholdVal').textContent = Math.round(state.jackpotThreshold * 100) + '%';
+      };
+
+      applyTheme(localStorage.getItem(STORAGE_THEME) || 'dark');
+      renderLedgerView();
+
+      setInterval(() => {
+        const now = new Date();
+        $('clockPill').textContent = now.toLocaleTimeString('en-GB');
+        const rem = 30 - (now.getSeconds() % 30);
+        $('countdownText').textContent = `${rem}s`;
+        if (rem === 30) autoSync();
+      }, 1000);
+
+      autoSync();
+      setInterval(autoSync, 5000);
+    }
+
+    initApp();
+  </script>
+</body>
+</html>

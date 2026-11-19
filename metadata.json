@@ -1,0 +1,6 @@
+{
+  "name": "Mixona",
+  "description": "Self-learning A-Z prediction studio combining Phantom Core, Renox v2.0, Hidan Trio, and Goku + Aura 500+.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
